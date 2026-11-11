@@ -383,6 +383,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .quote figcaption b { color: var(--fg); }
 .quote figcaption { align-items: center; }
 .who { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.who .id { display: grid; gap: 2px; min-width: 0; line-height: 1.2; }
+.who .id small { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; opacity: .75; }
 .av { position: relative; flex: 0 0 auto; width: 36px; height: 36px; border-radius: 50%; overflow: hidden; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); font-family: var(--f-display); font-weight: 800; font-size: 17px; }
 .av::before { content: attr(data-i); }
 .av img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -716,11 +718,11 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
   </div>
   <div class="quotes-rail" aria-label="Commentaires Instagram" tabindex="0">
     <div class="quotes" id="quotes">
-      <figure class="quote"><blockquote>Mais toi 😭 j'aime trop tes vidéos, on apprend des choses intéressantes dans la joie et la bonheur 😂❤️. Keep it up Jewriñ Ansu 🔥🔥</blockquote><figcaption><span class="who"><span class="av" data-i="S"><img src="img/avatars/senmindset.jpg" alt="" loading="lazy"></span><b>@senmindset</b></span><span>Instagram</span></figcaption></figure>
-      <figure class="quote hl"><blockquote>Le top des tops. Je suis très émue par cette vidéo. Ça montre que t'as une bonne maîtrise de ce que tu fais. Machalah, bonne continuation 🔥❤️</blockquote><figcaption><span class="who"><span class="av" data-i="A"><img src="img/avatars/aalykaaa.jpg" alt="" loading="lazy"></span><b>@aalykaaa</b></span><span>Instagram</span></figcaption></figure>
-      <figure class="quote"><blockquote>J'adore mon ami. On sent que tu as bien préparé la vidéo. 🔥</blockquote><figcaption><span class="who"><span class="av" data-i="M"><img src="img/avatars/mouhamedoune_.jpg" alt="" loading="lazy"></span><b>@mouhamedoune_</b></span><span>Instagram</span></figcaption></figure>
-      <figure class="quote"><blockquote>Un travail excellent comme d'habitude 🤝 Impatient de voir la suite !!!! Caaana dou Xalat dey appliqué 😂</blockquote><figcaption><span class="who"><span class="av" data-i="B"><img src="img/avatars/bilal_ehysse.jpg" alt="" loading="lazy"></span><b>@bilal_ehysse</b></span><span>Instagram</span></figcaption></figure>
-      <figure class="quote"><blockquote>Boy j'aime trop ta vidéo, je suis pressé de voir la suite 👏🔥😂</blockquote><figcaption><span class="who"><span class="av" data-i="I"><img src="img/avatars/inconue_0099.jpg" alt="" loading="lazy"></span><b>@inconue_0099</b></span><span>Instagram</span></figcaption></figure>
+      <figure class="quote"><blockquote>Mais toi 😭 j'aime trop tes vidéos, on apprend des choses intéressantes dans la joie et la bonheur 😂❤️. Keep it up Jewriñ Ansu 🔥🔥</blockquote><figcaption><span class="who"><span class="av" data-i="S"><img src="img/avatars/senmindset.jpg" alt="" loading="lazy"></span><span class="id"><small>Instagram</small><b>@senmindset</b></span></span></figcaption></figure>
+      <figure class="quote hl"><blockquote>Le top des tops. Je suis très émue par cette vidéo. Ça montre que t'as une bonne maîtrise de ce que tu fais. Machalah, bonne continuation 🔥❤️</blockquote><figcaption><span class="who"><span class="av" data-i="A"><img src="img/avatars/aalykaaa.jpg" alt="" loading="lazy"></span><span class="id"><small>Instagram</small><b>@aalykaaa</b></span></span></figcaption></figure>
+      <figure class="quote"><blockquote>J'adore mon ami. On sent que tu as bien préparé la vidéo. 🔥</blockquote><figcaption><span class="who"><span class="av" data-i="M"><img src="img/avatars/mouhamedoune_.jpg" alt="" loading="lazy"></span><span class="id"><small>Instagram</small><b>@mouhamedoune_</b></span></span></figcaption></figure>
+      <figure class="quote"><blockquote>Un travail excellent comme d'habitude 🤝 Impatient de voir la suite !!!! Caaana dou Xalat dey appliqué 😂</blockquote><figcaption><span class="who"><span class="av" data-i="B"><img src="img/avatars/bilal_ehysse.jpg" alt="" loading="lazy"></span><span class="id"><small>Instagram</small><b>@bilal_ehysse</b></span></span></figcaption></figure>
+      <figure class="quote"><blockquote>Boy j'aime trop ta vidéo, je suis pressé de voir la suite 👏🔥😂</blockquote><figcaption><span class="who"><span class="av" data-i="I"><img src="img/avatars/inconue_0099.jpg" alt="" loading="lazy"></span><span class="id"><small>Instagram</small><b>@inconue_0099</b></span></span></figcaption></figure>
     </div>
   </div>
 </section>
