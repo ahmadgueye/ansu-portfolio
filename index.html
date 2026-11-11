@@ -401,9 +401,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 @keyframes in-line { from { transform: scaleX(0); } }
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .sec-head h2, .sec-head p, .about-text h2, .about-text p, .training, .service,
+    .sec-head p, .about-text p, .training, .service,
     .filters, .shot-head, .shot, .reel, .viral a, .quotes-rail, .clients-head, .logos .logo,
-    .contact h2, .contact .direction, .ccard, .stat {
+    .contact .direction, .ccard, .stat {
       animation: in-up linear both; animation-timeline: view(); animation-range: entry 0% entry 85%;
     }
     .services, .shotlist { position: relative; border-top-color: transparent; }
@@ -418,6 +418,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     .reel:nth-child(6), .logos .logo:nth-child(6n+6) { animation-range: entry 40% cover 38%; }
   }
 }
+h2 .w { display: inline-block; }
+h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--i) * .07s); }
 .slug.typing::after { content: ""; display: inline-block; width: .6em; height: 1em; margin-left: 2px; vertical-align: -.15em; background: currentColor; animation: caret .8s steps(1) infinite; }
 </style>
 
@@ -825,6 +827,34 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       en.target.classList.contains('slug') ? typeSlug(en.target, 120) : countUp(en.target);
     }), { threshold: .6 });
     document.querySelectorAll('section .slug:not(.service .slug), .clients-head .slug, .stat b, .viral b').forEach(el => io.observe(el));
+
+    // Titres de section : découpés en mots qui montent l'un après l'autre, comme le titre du hero.
+    // Déclenché un peu avant l'arrivée à l'écran, pour qu'on voie la montée sans clignotement.
+    const splitWords = el => {
+      let i = 0;
+      const walk = node => [...node.childNodes].forEach(n => {
+        if (n.nodeType !== 3) return walk(n);
+        const frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) return frag.appendChild(document.createTextNode(part));
+          const w = document.createElement('span'); w.className = 'w'; w.style.setProperty('--i', i++); w.textContent = part; frag.appendChild(w);
+        });
+        n.replaceWith(frag);
+      });
+      walk(el);
+    };
+    const ioTitles = new IntersectionObserver(entries => entries.forEach(en => {
+      if (!en.isIntersecting) return;
+      ioTitles.unobserve(en.target);
+      en.target.classList.add('rising');
+    }), { rootMargin: '0px 0px 10% 0px' });
+    document.querySelectorAll('main h2, section h2').forEach(h => {
+      const r = h.getBoundingClientRect();
+      splitWords(h);
+      if (r.top < innerHeight * 1.1) return; // déjà visible au chargement : on ne le cache pas
+      ioTitles.observe(h);
+    });
   }
 
   // Menu mobile
