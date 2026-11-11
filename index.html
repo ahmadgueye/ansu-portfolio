@@ -928,7 +928,7 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
   const ease = p => p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
   const slide = target => {
     if (reduce) { pos = target; wrap(); rail.scrollLeft = pos; return; }
-    tween = { from: pos, to: target, t0: performance.now(), dur: 1300, until: performance.now() + 1300 + 3000 };
+    tween = { from: pos, to: target, t0: performance.now(), dur: 1300, until: 0 }; // le défilement continu reprend dès la fin du glissement
   };
   // Aller à la carte i par le chemin le plus court
   const goTo = i => {
