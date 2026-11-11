@@ -306,15 +306,6 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .shot { padding: 22px 0; border-bottom: 1px solid var(--line); align-items: center; transition: background .2s; }
 .shot:hover { background: linear-gradient(90deg, transparent, var(--accent-soft) 50%, transparent); }
 .shot .client { font-family: var(--f-display); font-weight: 800; text-transform: uppercase; font-size: 20px; line-height: 1.05; min-width: 0; }
-.client-logo {
-  display: flex; align-items: center; gap: 10px; width: fit-content; max-width: 100%; height: 56px; margin-bottom: 14px;
-  padding: 8px 12px; border-radius: 8px; background: var(--tile); border: 1px solid var(--line);
-}
-.client-logo img { height: 100%; width: auto; max-width: 150px; object-fit: contain; }
-.client-logo img + img { padding-left: 10px; border-left: 1px solid var(--line); }
-.client-logo.none { font-family: var(--f-script); font-weight: 700; font-size: 12px; letter-spacing: .04em; color: var(--accent); background: var(--accent-soft); border-color: transparent; }
-.shot:hover .client-logo { box-shadow: 0 8px 20px -12px rgba(25, 21, 26, .35); }
-.client-logo { transition: box-shadow .25s; }
 .shot .client small { display: block; font-family: var(--f-body); font-weight: 500; text-transform: none; font-size: 14px; color: var(--muted); margin-top: 6px; line-height: 1.35; }
 .shot .mission { min-width: 0; }
 .shot .mission p { margin: 0; }
@@ -567,7 +558,7 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
       <div class="shot-head"><span>Client</span><span>Mission</span><span>Livrables</span></div>
 
       <div class="shot" data-t="script video">
-        <div class="client"><span class="client-logo"><img src="img/logos/senegal.png" alt="" loading="lazy"></span>Ministère de la Communication<small>Télécommunications et Numérique · Sénégal</small></div>
+        <div class="client">Ministère de la Communication<small>Télécommunications et Numérique · Sénégal</small></div>
         <div class="mission"><p>Lancement du <strong>New Deal Technologique</strong>.</p><div class="tags"><span class="tag">Script VO</span><span class="tag">Découpage</span><span class="tag">Vidéo</span></div></div>
         <div class="deliv">
           <a class="doc" href="https://docs.google.com/document/d/13AFK0nPvlNndJckXx-iSCbNp0tdXtjEFY5W5-BSfLjE/edit?usp=drivesdk" target="_blank" rel="noopener">Script VO + découpage</a>
@@ -576,7 +567,7 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
       </div>
 
       <div class="shot" data-t="script video">
-        <div class="client"><span class="client-logo"><img src="img/logos/apix.svg" alt="" loading="lazy"></span>APIX SA<small>Film FII Sénégal</small></div>
+        <div class="client">APIX SA<small>Film FII Sénégal</small></div>
         <div class="mission"><p>Film de présentation du <strong>Forum Invest in Sénégal</strong>.</p><div class="tags"><span class="tag">Script VO</span><span class="tag">Découpage</span><span class="tag">Film</span></div></div>
         <div class="deliv">
           <a class="doc" href="https://docs.google.com/document/d/1MTv_EHnDlvtpBopwBFhQm2xAio5HSISCLwcYQRupXgw/edit?usp=sharing" target="_blank" rel="noopener">Script VO + découpage</a>
@@ -585,7 +576,7 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
       </div>
 
       <div class="shot" data-t="script video">
-        <div class="client"><span class="client-logo"><img src="img/logos/medickane.png" alt="" loading="lazy"></span>Clinique Medic'Kane<small>Santé · Dakar</small></div>
+        <div class="client">Clinique Medic'Kane<small>Santé · Dakar</small></div>
         <div class="mission"><p>Spot décliné en <strong>trois langues</strong> avec découpage technique complet.</p><div class="tags"><span class="tag">FR</span><span class="tag">Wolof</span><span class="tag">EN</span><span class="tag">Vidéo</span></div></div>
         <div class="deliv">
           <a class="doc" href="https://docs.google.com/document/u/0/d/1xd3qUsW7-hQyACuYsDdxNe42MtoZEe4NERM6gTewJbY/edit" target="_blank" rel="noopener">Script FR</a>
@@ -597,7 +588,7 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
       </div>
 
       <div class="shot" data-t="script video">
-        <div class="client"><span class="client-logo"><img src="img/logos/institut-francais.svg" alt="" loading="lazy"><img src="img/logos/teranga-tech.png" alt="" loading="lazy"></span>Institut Français<small>Teranga Tech Incub</small></div>
+        <div class="client">Institut Français<small>Teranga Tech Incub</small></div>
         <div class="mission"><p>Présentation de l'incubateur.</p><div class="tags"><span class="tag">Script</span><span class="tag">Découpage</span><span class="tag">Vidéo</span></div></div>
         <div class="deliv">
           <a class="doc" href="https://docs.google.com/document/u/0/d/1ihSdxMC-H9cKHwpsJkT9mDFvfvYzOV30ec2rVDkGvfk/edit" target="_blank" rel="noopener">Script + découpage</a>
@@ -606,7 +597,7 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
       </div>
 
       <div class="shot" data-t="video">
-        <div class="client"><span class="client-logo"><img src="img/logos/bnde.png" alt="" loading="lazy"></span>BNDE<small>Banque Nationale pour le Développement Économique</small></div>
+        <div class="client">BNDE<small>Banque Nationale pour le Développement Économique</small></div>
         <div class="mission"><p>Réalisation de la vidéo.</p><div class="tags"><span class="tag">Vidéo</span></div></div>
         <div class="deliv">
           <a class="vid" href="https://www.instagram.com/reel/DDUyWf_NCm-/" target="_blank" rel="noopener">Vidéo finale</a>
@@ -614,7 +605,7 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
       </div>
 
       <div class="shot" data-t="script video">
-        <div class="client"><span class="client-logo"><img src="img/logos/neurotech.png" alt="" loading="lazy"></span>Neurotech<small>Tech</small></div>
+        <div class="client">Neurotech<small>Tech</small></div>
         <div class="mission"><p>Script voix off et découpage, puis la vidéo.</p><div class="tags"><span class="tag">Script VO</span><span class="tag">Découpage</span><span class="tag">Vidéo</span></div></div>
         <div class="deliv">
           <a class="doc" href="https://docs.google.com/document/d/16g3wH7nQ9jRtA6eahs1B8UD6oxFoRuSm7_vGAubUfYI/edit" target="_blank" rel="noopener">Script VO + découpage</a>
@@ -623,7 +614,7 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
       </div>
 
       <div class="shot" data-t="script">
-        <div class="client"><span class="client-logo"><img src="img/logos/ministere-ci.png" alt="" loading="lazy"></span>Ministère de la Communication<small>Côte d'Ivoire</small></div>
+        <div class="client">Ministère de la Communication<small>Côte d'Ivoire</small></div>
         <div class="mission"><p>Écriture de script.</p><div class="tags"><span class="tag">Script</span></div></div>
         <div class="deliv">
           <a class="doc" href="https://docs.google.com/document/d/1xqhG6YwLIkslva8_akXhTkHd3DGdM1uWgNglB619700/edit?usp=drivesdk" target="_blank" rel="noopener">Script</a>
@@ -631,7 +622,7 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
       </div>
 
       <div class="shot" data-t="script">
-        <div class="client"><span class="client-logo"><img src="img/logos/baobab.svg" alt="" loading="lazy"></span>Groupe Baobab<small>Film institutionnel · 20 ans du groupe</small></div>
+        <div class="client">Groupe Baobab<small>Film institutionnel · 20 ans du groupe</small></div>
         <div class="mission"><p>Script du film institutionnel.</p><div class="tags"><span class="tag">Script</span></div></div>
         <div class="deliv">
           <a class="doc" href="https://docs.google.com/document/d/1nqt-cuYX7wFYOjonRTQz1F7WCc2-riKESrg9asjB8ug/edit?usp=sharing" target="_blank" rel="noopener">Script film institutionnel</a>
@@ -639,7 +630,7 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
       </div>
 
       <div class="shot" data-t="brand script video">
-        <div class="client"><span class="client-logo"><img src="img/logos/djiefall.jpg" alt="" loading="lazy"></span>Djie Fall Silk<small>Rebranding &amp; lancement</small></div>
+        <div class="client">Djie Fall Silk<small>Rebranding &amp; lancement</small></div>
         <div class="mission"><p>Rebranding et lancement de la marque. Vidéo <strong>entièrement tournée au téléphone</strong>.</p><div class="tags"><span class="tag">Branding</span><span class="tag">Script</span><span class="tag">Vidéo</span></div></div>
         <div class="deliv">
           <a class="doc" href="https://docs.google.com/document/d/1RmRoUrgjznYZbaM_m7Nai-zYxLwBk1rJ8CYQnsaASFc/edit" target="_blank" rel="noopener">Script</a>
@@ -648,7 +639,7 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
       </div>
 
       <div class="shot" data-t="brand">
-        <div class="client"><span class="client-logo"><img src="img/logos/mission-sens.png" alt="" loading="lazy"></span>Mission &amp; Sens<small>Rebranding</small></div>
+        <div class="client">Mission &amp; Sens<small>Rebranding</small></div>
         <div class="mission"><p>Stratégie de marque complète.</p><div class="tags"><span class="tag">Brand strategy</span></div></div>
         <div class="deliv">
           <a class="doc" href="https://docs.google.com/document/d/1dIdheQDmQK-qD99JRwJsTW8WGevZtyn0Y9rMJTA-52w/edit?usp=drivesdk" target="_blank" rel="noopener">Brand strategy</a>
@@ -656,7 +647,7 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
       </div>
 
       <div class="shot" data-t="brand">
-        <div class="client"><span class="client-logo"><img src="img/logos/zadada.png" alt="" loading="lazy"></span>Zadada<small>Rebranding de marque</small></div>
+        <div class="client">Zadada<small>Rebranding de marque</small></div>
         <div class="mission"><p>Refonte de la marque.</p><div class="tags"><span class="tag">Branding</span></div></div>
         <div class="deliv">
           <a class="web" href="https://www.instagram.com/_zadada_/" target="_blank" rel="noopener">Voir la marque</a>
@@ -664,7 +655,7 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
       </div>
 
       <div class="shot" data-t="video">
-        <div class="client"><span class="client-logo"><img src="img/logos/zadada.png" alt="" loading="lazy"></span>Zadada<small>Campagne</small></div>
+        <div class="client">Zadada<small>Campagne</small></div>
         <div class="mission"><p>Capsule Jam.</p><div class="tags"><span class="tag">Campagne</span><span class="tag">Vidéo</span></div></div>
         <div class="deliv">
           <a class="vid" href="https://www.instagram.com/reel/Cs1euLvIUAt/" target="_blank" rel="noopener">Capsule Jam</a>
@@ -672,7 +663,7 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
       </div>
 
       <div class="shot" data-t="video">
-        <div class="client"><span class="client-logo none">▶ Vidéo</span>Vidéo produit<small>Tournée au téléphone</small></div>
+        <div class="client">Vidéo produit<small>Tournée au téléphone</small></div>
         <div class="mission"><p class="highlight">1 million de ventes en moins de 24 h.</p><div class="tags"><span class="tag">Smartphone</span><span class="tag">Vidéo</span></div></div>
         <div class="deliv">
           <a class="vid" href="https://www.instagram.com/reel/Cp3KuoBoKwt/" target="_blank" rel="noopener">Voir la vidéo</a>
