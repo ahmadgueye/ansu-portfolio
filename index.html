@@ -358,17 +358,25 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 @media (max-width: 720px) { .viral { grid-template-columns: 1fr; } .viral a { grid-template-columns: auto 1fr; } .viral em { display: none; } }
 
 /* ---------- Témoignages ---------- */
+.avis-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 20px 32px; margin-bottom: 40px; }
+.avis-head .sec-head { margin-bottom: 0; }
+.q-nav { display: flex; gap: 8px; }
+.q-btn {
+  width: 44px; height: 44px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--fg);
+  display: grid; place-items: center; cursor: pointer; transition: background .2s, color .2s, border-color .2s, transform .2s;
+}
+.q-btn:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.q-btn:active { transform: scale(.94); }
+.q-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+/* Rail défilable : aligné sur la colonne du contenu à gauche, débordant à droite */
 .quotes-rail {
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  --gutter: max(20px, env(safe-area-inset-left, 0px), calc((100vw - 1160px) / 2 + 20px));
+  overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter);
+  scrollbar-width: none; overscroll-behavior-x: contain;
 }
-.quotes { display: flex; gap: 18px; width: max-content; padding-block: 4px; padding-right: 18px; animation: scroll 55s linear infinite; }
-.quotes-rail:hover .quotes, .quotes-rail:focus-within .quotes { animation-play-state: paused; }
-@media (prefers-reduced-motion: reduce) {
-  .quotes-rail { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
-  .quotes [aria-hidden="true"] { display: none; }
-}
+.quotes-rail::-webkit-scrollbar { display: none; }
+.quotes { display: flex; gap: 18px; width: max-content; padding-block: 4px; padding-inline: var(--gutter); }
+.quote { scroll-snap-align: start; }
 .quote { flex: 0 0 auto; width: min(360px, 78vw); margin: 0; padding: 24px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); display: flex; flex-direction: column; justify-content: space-between; }
 .quote blockquote { margin: 0; font-size: 17px; line-height: 1.5; }
 .quote figcaption { margin-top: 14px; font-family: var(--f-script); font-size: 13px; color: var(--muted); display: flex; justify-content: space-between; gap: 12px; }
@@ -696,10 +704,14 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
 </section>
 
 <section id="avis" style="padding-top:0">
-  <div class="wrap">
+  <div class="wrap avis-head">
     <div class="sec-head">
       <div class="slug">Ce que les gens disent de mes vidéos</div>
       <h2>Commentaires de l'audience.</h2>
+    </div>
+    <div class="q-nav">
+      <button class="q-btn" id="q-prev" aria-label="Commentaire précédent" aria-controls="quotes"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button class="q-btn" id="q-next" aria-label="Commentaire suivant" aria-controls="quotes"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
     </div>
   </div>
   <div class="quotes-rail" aria-label="Commentaires Instagram" tabindex="0">
@@ -883,9 +895,29 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
     shots.forEach(s => { s.hidden = f !== 'all' && !s.dataset.t.split(' ').includes(f); });
   }));
 
-  // Défilement continu des commentaires : on double la série pour boucler sans saut
+  // Carrousel des commentaires : flèches précédent / suivant, défilement auto toutes les 5 s
+  // (en pause au survol, au focus et pendant 10 s après un clic ; désactivé si le visiteur réduit les animations)
   const quotes = document.getElementById('quotes');
-  [...quotes.children].forEach(q => { const c = q.cloneNode(true); c.setAttribute('aria-hidden', 'true'); quotes.appendChild(c); });
+  const rail = document.querySelector('.quotes-rail');
+  const stepW = () => quotes.children[0].getBoundingClientRect().width + 18;
+  const go = dir => {
+    const max = rail.scrollWidth - rail.clientWidth;
+    const behavior = reduce ? 'auto' : 'smooth';
+    if (dir > 0 && rail.scrollLeft >= max - 4) rail.scrollTo({ left: 0, behavior });
+    else if (dir < 0 && rail.scrollLeft <= 4) rail.scrollTo({ left: max, behavior });
+    else rail.scrollBy({ left: dir * stepW(), behavior });
+  };
+  let hold = 0, hovering = false;
+  document.getElementById('q-prev').addEventListener('click', () => { go(-1); hold = Date.now() + 10000; });
+  document.getElementById('q-next').addEventListener('click', () => { go(1); hold = Date.now() + 10000; });
+  rail.addEventListener('keydown', e => { if (e.key === 'ArrowRight') { e.preventDefault(); go(1); } if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); } });
+  rail.addEventListener('pointerenter', () => hovering = true);
+  rail.addEventListener('pointerleave', () => hovering = false);
+  rail.addEventListener('pointerdown', () => hold = Date.now() + 10000);
+  if (!reduce) setInterval(() => {
+    if (hovering || document.hidden || Date.now() < hold || rail.contains(document.activeElement)) return;
+    go(1);
+  }, 5000);
   // Avatars : si la photo manque, on garde l'initiale
   quotes.querySelectorAll('.av img').forEach(img => {
     const drop = () => img.remove();
