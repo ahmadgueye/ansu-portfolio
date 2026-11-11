@@ -182,12 +182,36 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   writing-mode: vertical-rl; letter-spacing: .08em; text-transform: uppercase;
 }
 
-.stats { border-top: 1px solid var(--frame-line); }
-.stats .wrap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; padding-top: 0; }
+/* Bande de logos qui défile, en bas du hero */
+.marquee { border-top: 1px solid var(--frame-line); }
+.marquee .wrap { display: flex; align-items: center; gap: 24px; padding-block: 18px; }
+.marquee-label { flex: 0 0 auto; max-width: 10em; font-family: var(--f-script); font-size: 13px; line-height: 1.3; text-transform: uppercase; letter-spacing: .04em; color: var(--frame-muted); }
+.marquee-rail {
+  flex: 1 1 auto; min-width: 0; overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+}
+.marquee-track { display: flex; gap: 12px; width: max-content; margin: 0; padding: 0 12px 0 0; list-style: none; animation: scroll 45s linear infinite; }
+.marquee-rail:hover .marquee-track, .marquee-rail:focus-within .marquee-track { animation-play-state: paused; }
+.mq {
+  flex: 0 0 auto; height: 60px; padding: 10px 18px; border-radius: 8px; background: var(--tile);
+  display: flex; align-items: center; gap: 10px;
+}
+.mq img { height: 38px; width: auto; max-width: 170px; object-fit: contain; filter: grayscale(1) contrast(1.1); opacity: .8; mix-blend-mode: multiply; transition: filter .3s, opacity .3s; }
+.mq:hover img { filter: none; opacity: 1; }
+.mq span { font-size: 10px; line-height: 1.25; font-weight: 600; text-transform: uppercase; letter-spacing: .03em; color: #3b3439; max-width: 15ch; }
+@media (prefers-reduced-motion: reduce) {
+  .marquee-rail { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  .marquee-track [aria-hidden="true"] { display: none; }
+}
+
+/* Chiffres clés, juste sous le hero */
+.stats { border-bottom: 1px solid var(--line); }
+.stats .wrap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; padding-block: 12px; }
 .stat { padding: 26px 20px 30px 0; min-width: 0; }
-.stat + .stat { padding-left: 20px; border-left: 1px solid var(--frame-line); }
-.stat b { display: block; font-family: var(--f-display); font-weight: 800; font-size: clamp(34px, 4.4vw, 52px); line-height: 1; color: var(--frame-fg); font-variant-numeric: tabular-nums; }
-.stat span { display: block; margin-top: 8px; font-size: 14px; color: var(--frame-muted); line-height: 1.4; }
+.stat + .stat { padding-left: 20px; border-left: 1px solid var(--line); }
+.stat b { display: block; font-family: var(--f-display); font-weight: 800; font-size: clamp(34px, 4.4vw, 52px); line-height: 1; color: var(--fg); font-variant-numeric: tabular-nums; }
+.stat span { display: block; margin-top: 8px; font-size: 14px; color: var(--muted); line-height: 1.4; }
 
 @media (max-width: 860px) {
   .hero .wrap { grid-template-columns: 1fr; }
@@ -197,12 +221,14 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   .portrait figcaption { display: none; }
   .stats .wrap { grid-template-columns: 1fr 1fr; }
   .stat:nth-child(3) { padding-left: 0; border-left: 0; }
-  .stat:nth-child(n+3) { border-top: 1px solid var(--frame-line); }
+  .stat:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .marquee-label { max-width: none; }
+  .marquee .wrap { flex-direction: column; align-items: stretch; gap: 12px; padding-block: 16px 20px; }
 }
 
 /* ---------- Clients : logos ---------- */
 @keyframes scroll { to { transform: translateX(-50%); } }
-.clients { padding-block: clamp(48px, 6vw, 72px); border-bottom: 1px solid var(--line); }
+.clients { padding-block: 0 clamp(64px, 9vw, 112px); }
 .clients-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 24px; margin-bottom: 24px; }
 .clients-head p { margin: 0; color: var(--muted); font-size: 15px; }
 .logos { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; list-style: none; margin: 0; padding: 0; }
@@ -397,7 +423,30 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       <figcaption>Ansoumana « Ansou » Thiam</figcaption>
     </figure>
   </div>
-  <div class="stats">
+  <div class="marquee">
+    <div class="wrap">
+      <div class="marquee-label">Ils m'ont confié leur message</div>
+      <div class="marquee-rail" tabindex="0" aria-label="Logos des clients">
+        <ul class="marquee-track" id="marquee">
+        <li class="mq"><img src="img/logos/senegal.png" alt=""><span>Ministère de la Communication · Sénégal</span></li>
+        <li class="mq"><img src="img/logos/institut-francais.svg" alt="Institut Français"></li>
+        <li class="mq"><img src="img/logos/bnde.png" alt="BNDE"></li>
+        <li class="mq"><img src="img/logos/medickane.png" alt="Clinique Medic'Kane"></li>
+        <li class="mq"><img src="img/logos/ministere-ci.png" alt="Ministère de la Communication de Côte d'Ivoire"></li>
+        <li class="mq"><img src="img/logos/apix.svg" alt="APIX SA"></li>
+        <li class="mq"><img src="img/logos/neurotech.png" alt="Neurotech"></li>
+        <li class="mq"><img src="img/logos/teranga-tech.png" alt="Teranga Tech Incub"></li>
+        <li class="mq"><img src="img/logos/baobab.svg" alt="Groupe Baobab"></li>
+        <li class="mq"><img src="img/logos/zadada.png" alt="Zadada"></li>
+        <li class="mq"><img src="img/logos/djiefall.jpg" alt="Djie Fall"></li>
+        <li class="mq"><img src="img/logos/mission-sens.png" alt="Mission &amp; Sens"></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>
+
+  <div class="stats" aria-label="Chiffres clés">
     <div class="wrap">
       <div class="stat"><b>6+ ans</b><span>de copywriting, depuis 2019</span></div>
       <div class="stat"><b>1M</b><span>de ventes en moins de 24 h, avec une vidéo tournée au téléphone</span></div>
@@ -405,30 +454,6 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       <div class="stat"><b>68,8k</b><span>vues sur un reel tourné au smartphone</span></div>
     </div>
   </div>
-</header>
-
-<div class="clients" aria-labelledby="clients-title">
-  <div class="wrap">
-    <div class="clients-head">
-      <div class="slug" id="clients-title">Ils m'ont fait confiance</div>
-      <p>Institutions, banques, santé, tech et marques.</p>
-    </div>
-    <ul class="logos">
-      <li class="logo stack"><img class="crest" src="img/logos/senegal.png" alt=""><span class="crest-label">Ministère de la Communication, des Télécoms et du Numérique</span></li>
-      <li class="logo"><img src="img/logos/institut-francais.svg" alt="Institut Français"></li>
-      <li class="logo"><img src="img/logos/bnde.png" alt="BNDE, Banque Nationale pour le Développement Économique"></li>
-      <li class="logo"><img src="img/logos/medickane.png" alt="Clinique Medic'Kane"></li>
-      <li class="logo"><img src="img/logos/ministere-ci.png" alt="Ministère de la Communication de Côte d'Ivoire"></li>
-      <li class="logo"><img src="img/logos/apix.svg" alt="APIX SA"></li>
-      <li class="logo"><img src="img/logos/neurotech.png" alt="Neurotech"></li>
-      <li class="logo"><img src="img/logos/teranga-tech.png" alt="Teranga Tech Incub"></li>
-      <li class="logo"><img src="img/logos/baobab.svg" alt="Groupe Baobab"></li>
-      <li class="logo"><img src="img/logos/zadada.png" alt="Zadada"></li>
-      <li class="logo"><img src="img/logos/djiefall.jpg" alt="Djie Fall"></li>
-      <li class="logo"><img src="img/logos/mission-sens.png" alt="Mission &amp; Sens"></li>
-    </ul>
-  </div>
-</div>
 
 <section id="services">
   <div class="wrap about">
@@ -633,6 +658,29 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   </div>
 </section>
 
+<div class="clients" aria-labelledby="clients-title">
+  <div class="wrap">
+    <div class="clients-head">
+      <div class="slug" id="clients-title">Ils m'ont fait confiance</div>
+      <p>Institutions, banques, santé, tech et marques.</p>
+    </div>
+    <ul class="logos">
+      <li class="logo stack"><img class="crest" src="img/logos/senegal.png" alt=""><span class="crest-label">Ministère de la Communication, des Télécoms et du Numérique</span></li>
+      <li class="logo"><img src="img/logos/institut-francais.svg" alt="Institut Français"></li>
+      <li class="logo"><img src="img/logos/bnde.png" alt="BNDE, Banque Nationale pour le Développement Économique"></li>
+      <li class="logo"><img src="img/logos/medickane.png" alt="Clinique Medic'Kane"></li>
+      <li class="logo"><img src="img/logos/ministere-ci.png" alt="Ministère de la Communication de Côte d'Ivoire"></li>
+      <li class="logo"><img src="img/logos/apix.svg" alt="APIX SA"></li>
+      <li class="logo"><img src="img/logos/neurotech.png" alt="Neurotech"></li>
+      <li class="logo"><img src="img/logos/teranga-tech.png" alt="Teranga Tech Incub"></li>
+      <li class="logo"><img src="img/logos/baobab.svg" alt="Groupe Baobab"></li>
+      <li class="logo"><img src="img/logos/zadada.png" alt="Zadada"></li>
+      <li class="logo"><img src="img/logos/djiefall.jpg" alt="Djie Fall"></li>
+      <li class="logo"><img src="img/logos/mission-sens.png" alt="Mission &amp; Sens"></li>
+    </ul>
+  </div>
+</div>
+
 <section class="contact" id="contact">
   <div class="wrap">
     <div class="slug">FONDU AU NOIR. — Votre projet, prochaine scène.</div>
@@ -703,6 +751,10 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   // Défilement continu des commentaires : on double la série pour boucler sans saut
   const quotes = document.getElementById('quotes');
   [...quotes.children].forEach(q => { const c = q.cloneNode(true); c.setAttribute('aria-hidden', 'true'); quotes.appendChild(c); });
+
+  // Défilement des logos : même principe
+  const marquee = document.getElementById('marquee');
+  [...marquee.children].forEach(l => { const c = l.cloneNode(true); c.setAttribute('aria-hidden', 'true'); marquee.appendChild(c); });
 
   // Boutons copier
   document.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', () => {
