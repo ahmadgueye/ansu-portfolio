@@ -371,12 +371,11 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 /* Rail défilable : aligné sur la colonne du contenu à gauche, débordant à droite */
 .quotes-rail {
   --gutter: max(20px, env(safe-area-inset-left, 0px), calc((100vw - 1160px) / 2 + 20px));
-  overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter);
+  overflow-x: auto;
   scrollbar-width: none; overscroll-behavior-x: contain;
 }
 .quotes-rail::-webkit-scrollbar { display: none; }
 .quotes { display: flex; gap: 18px; width: max-content; padding-block: 4px; padding-inline: var(--gutter); }
-.quote { scroll-snap-align: start; }
 .quote { flex: 0 0 auto; width: min(360px, 78vw); margin: 0; padding: 24px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); display: flex; flex-direction: column; justify-content: space-between; }
 .quote blockquote { margin: 0; font-size: 17px; line-height: 1.5; }
 .quote figcaption { margin-top: 14px; font-family: var(--f-script); font-size: 13px; color: var(--muted); display: flex; justify-content: space-between; gap: 12px; }
@@ -897,29 +896,46 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
     shots.forEach(s => { s.hidden = f !== 'all' && !s.dataset.t.split(' ').includes(f); });
   }));
 
-  // Carrousel des commentaires : flèches précédent / suivant, défilement auto toutes les 5 s
-  // (en pause au survol, au focus et pendant 10 s après un clic ; désactivé si le visiteur réduit les animations)
+  // Carrousel des commentaires : défilement continu (en pause au survol / focus / glisser)
+  // + flèches précédent / suivant qui se calent sur une carte, puis le défilement reprend.
   const quotes = document.getElementById('quotes');
   const rail = document.querySelector('.quotes-rail');
-  const stepW = () => quotes.children[0].getBoundingClientRect().width + 18;
+  [...quotes.children].forEach(q => { const c = q.cloneNode(true); c.setAttribute('aria-hidden', 'true'); quotes.appendChild(c); });
+  const n = quotes.children.length / 2;
+  const setW = () => quotes.children[n].offsetLeft - quotes.children[0].offsetLeft;
+  const stepW = () => quotes.children[1].offsetLeft - quotes.children[0].offsetLeft;
+  const SPEED = 32; // px par seconde
+  let pos = 0, tween = null, hovering = false, dragging = false, last = performance.now();
+  const wrap = () => { const w = setW(); if (pos >= w) pos -= w; if (pos < 0) pos += w; };
   const go = dir => {
-    const max = rail.scrollWidth - rail.clientWidth;
-    const behavior = reduce ? 'auto' : 'smooth';
-    if (dir > 0 && rail.scrollLeft >= max - 4) rail.scrollTo({ left: 0, behavior });
-    else if (dir < 0 && rail.scrollLeft <= 4) rail.scrollTo({ left: max, behavior });
-    else rail.scrollBy({ left: dir * stepW(), behavior });
+    pos = rail.scrollLeft; const st = stepW();
+    if (dir < 0 && pos < st) pos += setW();
+    const target = (dir > 0 ? Math.floor(pos / st + 0.02) + 1 : Math.ceil(pos / st - 0.02) - 1) * st;
+    if (reduce) { pos = target; wrap(); rail.scrollLeft = pos; return; }
+    tween = { from: pos, to: target, t0: performance.now(), dur: 650, until: performance.now() + 650 + 2500 };
   };
-  let hold = 0, hovering = false;
-  document.getElementById('q-prev').addEventListener('click', () => { go(-1); hold = Date.now() + 10000; });
-  document.getElementById('q-next').addEventListener('click', () => { go(1); hold = Date.now() + 10000; });
+  document.getElementById('q-prev').addEventListener('click', () => go(-1));
+  document.getElementById('q-next').addEventListener('click', () => go(1));
   rail.addEventListener('keydown', e => { if (e.key === 'ArrowRight') { e.preventDefault(); go(1); } if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); } });
   rail.addEventListener('pointerenter', () => hovering = true);
-  rail.addEventListener('pointerleave', () => hovering = false);
-  rail.addEventListener('pointerdown', () => hold = Date.now() + 10000);
-  if (!reduce) setInterval(() => {
-    if (hovering || document.hidden || Date.now() < hold || rail.contains(document.activeElement)) return;
-    go(1);
-  }, 5000);
+  rail.addEventListener('pointerleave', () => { hovering = false; pos = rail.scrollLeft; });
+  rail.addEventListener('touchstart', () => dragging = true, { passive: true });
+  rail.addEventListener('touchend', () => setTimeout(() => { dragging = false; pos = rail.scrollLeft; }, 1500), { passive: true });
+  rail.addEventListener('wheel', () => { pos = rail.scrollLeft; }, { passive: true });
+  const tick = now => {
+    const dt = Math.min(64, now - last) / 1000; last = now;
+    if (tween) {
+      const p = Math.min(1, (now - tween.t0) / tween.dur), e = 1 - Math.pow(1 - p, 3);
+      pos = tween.from + (tween.to - tween.from) * e;
+      if (p === 1 && now > tween.until) tween = null;
+      wrap(); rail.scrollLeft = pos;
+      if (p === 1 && tween) tween.from = tween.to = pos; // pause courte sur la carte choisie
+    } else if (!reduce && !hovering && !dragging && !document.hidden && !rail.matches(":focus-visible")) {
+      pos += SPEED * dt; wrap(); rail.scrollLeft = pos;
+    }
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
   // Avatars : si la photo manque, on garde l'initiale
   quotes.querySelectorAll('.av img').forEach(img => {
     const drop = () => img.remove();
