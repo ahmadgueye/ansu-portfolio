@@ -367,6 +367,11 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 }
 .q-btn:hover { background: var(--fg); color: var(--bg); border-color: var(--fg); }
 .q-btn:active { transform: scale(.94); }
+.q-dots { display: flex; gap: 8px; margin-top: 22px; }
+.q-dot { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 8px; background: var(--line); cursor: pointer; transition: width .5s ease, background .3s; }
+.q-dot:hover { background: var(--muted); }
+.q-dot[aria-current="true"] { width: 28px; background: var(--accent); }
+.q-dot::after { content: ""; display: block; margin: -8px; height: 24px; } /* zone de clic plus large */
 .q-btn svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 /* Rail défilable : aligné sur la colonne du contenu à gauche, débordant à droite */
 .quotes-rail {
@@ -724,6 +729,7 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
       <figure class="quote"><blockquote>Boy j'aime trop ta vidéo, je suis pressé de voir la suite 👏🔥😂</blockquote><figcaption><span class="who"><span class="av" data-i="I"><img src="img/avatars/inconue_0099.jpg" alt="" loading="lazy"></span><span class="id"><small>Instagram</small><b>@inconue_0099</b></span></span></figcaption></figure>
     </div>
   </div>
+  <div class="wrap"><div class="q-dots" id="q-dots" role="group" aria-label="Choisir un commentaire"></div></div>
 </section>
 
 <div class="clients" aria-labelledby="clients-title">
@@ -904,15 +910,42 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
   const n = quotes.children.length / 2;
   const setW = () => quotes.children[n].offsetLeft - quotes.children[0].offsetLeft;
   const stepW = () => quotes.children[1].offsetLeft - quotes.children[0].offsetLeft;
-  const SPEED = 32; // px par seconde
+  const SPEED = 24; // px par seconde
+  const dotsBox = document.getElementById('q-dots');
+  for (let i = 0; i < n; i++) {
+    const d = document.createElement('button');
+    d.className = 'q-dot'; d.type = 'button'; d.setAttribute('aria-label', 'Commentaire ' + (i + 1) + ' sur ' + n);
+    d.addEventListener('click', () => goTo(i));
+    dotsBox.appendChild(d);
+  }
+  const dots = [...dotsBox.children];
+  let shown = -1;
+  const syncDots = () => {
+    const i = Math.round(pos / stepW()) % n;
+    if (i === shown) return; shown = i;
+    dots.forEach((d, k) => d.setAttribute('aria-current', k === i ? 'true' : 'false'));
+  };
+  const ease = p => p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+  const slide = target => {
+    if (reduce) { pos = target; wrap(); rail.scrollLeft = pos; return; }
+    tween = { from: pos, to: target, t0: performance.now(), dur: 1300, until: performance.now() + 1300 + 3000 };
+  };
+  // Aller à la carte i par le chemin le plus court
+  const goTo = i => {
+    pos = rail.scrollLeft; const st = stepW(), w = setW();
+    let target = i * st;
+    if (target - pos > w / 2) target -= w;
+    if (pos - target > w / 2) target += w;
+    if (target < 0) { pos += w; target += w; }
+    slide(target);
+  };
   let pos = 0, tween = null, hovering = false, dragging = false, last = performance.now();
   const wrap = () => { const w = setW(); if (pos >= w) pos -= w; if (pos < 0) pos += w; };
   const go = dir => {
     pos = rail.scrollLeft; const st = stepW();
     if (dir < 0 && pos < st) pos += setW();
     const target = (dir > 0 ? Math.floor(pos / st + 0.02) + 1 : Math.ceil(pos / st - 0.02) - 1) * st;
-    if (reduce) { pos = target; wrap(); rail.scrollLeft = pos; return; }
-    tween = { from: pos, to: target, t0: performance.now(), dur: 650, until: performance.now() + 650 + 2500 };
+    slide(target);
   };
   document.getElementById('q-prev').addEventListener('click', () => go(-1));
   document.getElementById('q-next').addEventListener('click', () => go(1));
@@ -925,7 +958,7 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
   const tick = now => {
     const dt = Math.min(64, now - last) / 1000; last = now;
     if (tween) {
-      const p = Math.min(1, (now - tween.t0) / tween.dur), e = 1 - Math.pow(1 - p, 3);
+      const p = Math.min(1, (now - tween.t0) / tween.dur), e = ease(p);
       pos = tween.from + (tween.to - tween.from) * e;
       if (p === 1 && now > tween.until) tween = null;
       wrap(); rail.scrollLeft = pos;
@@ -933,6 +966,7 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
     } else if (!reduce && !hovering && !dragging && !document.hidden && !rail.matches(":focus-visible")) {
       pos += SPEED * dt; wrap(); rail.scrollLeft = pos;
     }
+    syncDots();
     requestAnimationFrame(tick);
   };
   requestAnimationFrame(tick);
