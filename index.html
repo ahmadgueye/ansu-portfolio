@@ -377,6 +377,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .quotes-rail {
   --gutter: max(20px, env(safe-area-inset-left, 0px), calc((100vw - 1160px) / 2 + 20px));
   overflow-x: auto;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
   scrollbar-width: none; overscroll-behavior-x: contain;
 }
 .quotes-rail::-webkit-scrollbar { display: none; }
