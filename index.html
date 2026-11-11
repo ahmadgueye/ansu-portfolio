@@ -81,7 +81,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   color: var(--frame-fg); border-bottom: 1px solid var(--frame-line);
 }
-.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 8px; }
 .brand { font-family: var(--f-display); font-weight: 900; font-size: 24px; letter-spacing: .02em; text-decoration: none; text-transform: uppercase; }
 .brand span { color: var(--frame-accent); }
 .nav ul { display: flex; gap: 26px; list-style: none; margin: 0; padding: 0; font-size: 15px; }
@@ -90,7 +90,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .btn {
   display: inline-flex; align-items: center; gap: 10px;
   font-family: var(--f-body); font-weight: 600; font-size: 14px; line-height: 1.2;
-  padding: 9px 16px; border-radius: 999px; text-decoration: none;
+  padding: 7px 14px; border-radius: 15px; text-decoration: none;
   background: var(--frame-accent); color: var(--on-accent); border: 0; cursor: pointer;
   transition: transform .2s, background .2s;
 }
@@ -99,7 +99,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .btn.ghost:hover { box-shadow: inset 0 0 0 1px var(--frame-fg); background: transparent; }
 .nav-actions { display: flex; align-items: center; gap: 10px; }
 .theme-toggle {
-  width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--frame-line-strong); flex: 0 0 auto;
+  width: 34px; height: 34px; border-radius: 15px; border: 1px solid var(--frame-line-strong); flex: 0 0 auto;
   background: transparent; color: var(--frame-muted); cursor: pointer;
   display: grid; place-items: center; transition: color .2s, border-color .2s;
 }
@@ -108,7 +108,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .theme-toggle .i-sun, .theme-toggle[data-mode="dark"] .i-moon { display: none; }
 .theme-toggle[data-mode="dark"] .i-sun { display: block; }
 .burger {
-  display: none; width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--frame-line-strong);
+  display: none; width: 36px; height: 36px; border-radius: 15px; border: 1px solid var(--frame-line-strong);
   background: transparent; color: var(--frame-fg); cursor: pointer; position: relative; flex: 0 0 auto;
 }
 .burger span, .burger span::before, .burger span::after {
@@ -156,8 +156,8 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   margin: 22px 0 0; max-width: 46ch;
 }
 .direction b { color: var(--frame-fg); font-weight: 700; }
-.roles { display: flex; flex-wrap: wrap; gap: 8px; margin: 28px 0 0; padding: 0; list-style: none; }
-.roles li { font-size: 13px; padding: 4px 10px; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--frame-line-strong); color: var(--frame-fg); }
+.roles { display: flex; flex-wrap: wrap; gap: 4px 0; margin: 26px 0 0; padding: 0; list-style: none; font-family: var(--f-display); font-weight: 600; font-size: 20px; line-height: 1.2; text-transform: uppercase; letter-spacing: .03em; color: var(--frame-fg); }
+.roles li:not(:last-child)::after { content: "/"; margin: 0 12px; color: var(--frame-accent); font-weight: 800; }
 .hero-cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 32px; }
 .portrait { position: relative; align-self: end; min-width: 0; margin: 0; display: flex; justify-content: center; }
 .portrait::before {
@@ -176,6 +176,29 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   height: clamp(440px, 48vw, 640px); width: auto; max-width: 100%; object-fit: contain; object-position: bottom;
   filter: drop-shadow(0 30px 40px rgba(0,0,0,.45));
 }
+/* Cercles : apparition, puis respiration du disque et rotation de l'anneau pointillé */
+@keyframes disc-in { from { opacity: 0; transform: translateX(-50%) scale(.82); } }
+@keyframes disc-breathe { 0%, 100% { transform: translateX(-50%) scale(1); } 50% { transform: translateX(-50%) scale(1.035); } }
+@keyframes ring-spin { from { transform: translateX(-50%) rotate(0deg); } to { transform: translateX(-50%) rotate(360deg); } }
+@keyframes orbit { to { transform: rotate(360deg); } }
+.portrait::before { animation: disc-in 1s cubic-bezier(.2,.7,.2,1) both, disc-breathe 7s ease-in-out 1s infinite; }
+.portrait::after { animation: ring-spin 80s linear infinite; }
+.orbit { position: absolute; z-index: 0; left: 50%; bottom: 2%; width: min(104%, 640px); aspect-ratio: 1; margin-left: calc(min(104%, 640px) / -2); animation: orbit 18s linear infinite; pointer-events: none; }
+.orbit::before { content: ""; position: absolute; left: 50%; top: -5px; width: 10px; height: 10px; margin-left: -5px; border-radius: 50%; background: var(--frame-accent); box-shadow: 0 0 0 5px color-mix(in srgb, var(--frame-accent) 22%, transparent); }
+@keyframes portrait-in { from { opacity: 0; transform: translateY(24px); } }
+.portrait img { animation: portrait-in .9s cubic-bezier(.2,.7,.2,1) .15s both; }
+
+/* Textes : machine à écrire sur le slug, mots qui montent sur le titre, puis le reste en fondu */
+@keyframes rise { from { opacity: 0; transform: translateY(.45em); } }
+@keyframes fade-up { from { opacity: 0; transform: translateY(12px); } }
+@keyframes caret { 50% { opacity: 0; } }
+.hero h1 .w { display: inline-block; animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(.35s + var(--i) * .07s); }
+.hero .slug.typing::after { content: ""; display: inline-block; width: .6em; height: 1em; margin-left: 2px; vertical-align: -.15em; background: currentColor; animation: caret .8s steps(1) infinite; }
+.direction, .roles li, .hero-cta { animation: fade-up .6s ease-out both; }
+.hero .direction { animation-delay: .95s; }
+.roles li { animation-delay: calc(1.15s + var(--i, 0) * .08s); }
+.hero-cta { animation-delay: 1.5s; }
+.contact .direction { animation: none; }
 .portrait figcaption {
   position: absolute; right: 0; top: 18%; z-index: 2;
   font-family: var(--f-script); font-size: 13px; color: var(--frame-muted);
@@ -185,7 +208,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 /* Bande de logos qui défile, en bas du hero */
 .marquee { border-top: 1px solid var(--frame-line); }
 .marquee .wrap { display: flex; align-items: center; gap: 24px; padding-block: 18px; }
-.marquee-label { flex: 0 0 auto; max-width: 10em; font-family: var(--f-script); font-size: 13px; line-height: 1.3; text-transform: uppercase; letter-spacing: .04em; color: var(--frame-muted); }
+.marquee-label { flex: 0 0 auto; max-width: 12em; font-family: var(--f-script); font-size: 13px; line-height: 1.3; text-transform: uppercase; letter-spacing: .04em; color: var(--frame-muted); }
 .marquee-rail {
   flex: 1 1 auto; min-width: 0; overflow: hidden;
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
@@ -271,7 +294,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
 .chip {
   font-family: var(--f-script); font-weight: 700; font-size: 12px; text-transform: uppercase;
-  padding: 5px 11px; border-radius: 999px; border: 1px solid var(--line);
+  padding: 4px 10px; border-radius: 15px; border: 1px solid var(--line);
   background: transparent; color: var(--muted); cursor: pointer; transition: all .2s;
 }
 .chip:hover { color: var(--fg); border-color: var(--fg); }
@@ -366,7 +389,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .ccard .row { display: flex; flex-wrap: wrap; gap: 8px; }
 .mini {
   font-family: var(--f-body); font-size: 12px; font-weight: 600; line-height: 1.2; text-decoration: none;
-  padding: 5px 11px; border-radius: 999px; cursor: pointer;
+  padding: 4px 10px; border-radius: 15px; cursor: pointer;
   background: transparent; color: var(--frame-fg); border: 1px solid var(--frame-line-strong); transition: border-color .2s;
 }
 .mini:hover { border-color: var(--frame-fg); }
@@ -411,7 +434,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
       <h1>J'écris ce que votre marque <em>doit dire.</em></h1>
       <p class="direction">(puis il prend la caméra, <b>tourne</b> et <b>monte</b> lui‑même la vidéo.)</p>
       <ul class="roles" aria-label="Rôles">
-        <li>Copywriter</li><li>Creative Director</li><li>Brand Strategist</li><li>Vidéaste &amp; monteur</li>
+        <li style="--i:0">Copywriter</li><li style="--i:1">Creative Director</li><li style="--i:2">Brand Strategist</li><li style="--i:3">Vidéaste &amp; monteur</li>
       </ul>
       <div class="hero-cta">
         <a class="btn" href="#projets">Voir les projets</a>
@@ -420,6 +443,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     </div>
     <figure class="portrait">
       <img src="img/ansou-cutout.png" alt="Portrait d'Ansoumana Thiam, bras croisés, t‑shirt bordeaux" width="828" height="1200">
+      <span class="orbit" aria-hidden="true"></span>
       <figcaption>Ansoumana « Ansou » Thiam</figcaption>
     </figure>
   </div>
@@ -727,6 +751,32 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
     root.dataset.theme = next;
     try { localStorage.setItem('theme', next); } catch (e) {}
   });
+
+  // Hero : titre découpé en mots (animés en CSS) et slug tapé à la machine
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce) {
+    const h1 = document.querySelector('.hero h1');
+    let i = 0;
+    const split = el => [...el.childNodes].forEach(n => {
+      if (n.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        n.textContent.split(/(\s+)/).forEach(part => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+          const w = document.createElement('span'); w.className = 'w'; w.style.setProperty('--i', i++); w.textContent = part; frag.appendChild(w);
+        });
+        n.replaceWith(frag);
+      } else split(n);
+    });
+    split(h1);
+    const slug = document.querySelector('.hero .slug');
+    const full = slug.textContent;
+    slug.setAttribute('aria-label', full);
+    slug.textContent = ''; slug.classList.add('typing');
+    let k = 0;
+    const type = () => { slug.textContent = full.slice(0, ++k); if (k < full.length) setTimeout(type, 28); else setTimeout(() => slug.classList.remove('typing'), 1400); };
+    setTimeout(type, 150);
+  }
 
   // Menu mobile
   const nav = document.querySelector('.nav');
