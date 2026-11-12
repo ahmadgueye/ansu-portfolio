@@ -144,11 +144,10 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .hero { background: var(--frame); color: var(--frame-fg); padding-block: 0; overflow: hidden; }
 .hero .wrap { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 24px; padding-top: clamp(24px, 3vw, 40px); }
 .hero-copy { padding-block: clamp(24px, 4vw, 56px); min-width: 0; position: relative; z-index: 2; }
-.hero .slug { color: var(--frame-accent); }
 .hero h1 {
   font-family: var(--f-display); font-weight: 900; text-transform: uppercase;
   font-size: clamp(48px, 6.6vw, 96px); line-height: .88; letter-spacing: -.005em;
-  margin: 18px 0 0; text-wrap: balance;
+  margin: 0; text-wrap: balance;
 }
 .hero h1 em { font-style: normal; color: var(--frame-accent); }
 .direction {
@@ -477,7 +476,6 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
 <header class="hero" id="top">
   <div class="wrap">
     <div class="hero-copy">
-      <div class="slug">INT. STUDIO — DAKAR, SÉNÉGAL — JOUR</div>
       <h1>J'écris ce que votre marque <em>doit dire.</em></h1>
       <p class="direction">(puis il prend la caméra, <b>tourne</b> et <b>monte</b> lui‑même la vidéo.)</p>
       <ul class="roles" aria-label="Rôles">
@@ -821,13 +819,6 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
       } else split(n);
     });
     split(h1);
-    const slug = document.querySelector('.hero .slug');
-    const full = slug.textContent;
-    slug.setAttribute('aria-label', full);
-    slug.textContent = ''; slug.classList.add('typing');
-    let k = 0;
-    const type = () => { slug.textContent = full.slice(0, ++k); if (k < full.length) setTimeout(type, 28); else setTimeout(() => slug.classList.remove('typing'), 1400); };
-    setTimeout(type, 150);
   }
 
   // Sluglines des sections : tapées à la machine quand elles arrivent à l'écran (le texte reste affiché sans JS)
