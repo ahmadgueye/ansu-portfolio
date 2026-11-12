@@ -313,7 +313,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .tag { font-family: var(--f-script); font-size: 12px; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; background: var(--accent-soft); color: var(--accent); }
 .deliv { display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
 .deliv a {
-  display: inline-flex; align-items: center; gap: 6px;
+  display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
   font-size: 13px; font-weight: 500; line-height: 1.3; text-decoration: none;
   padding: 4px 9px; border-radius: 5px; border: 1px solid var(--line); background: var(--bg);
   transition: border-color .2s, color .2s;
@@ -987,11 +987,12 @@ html.reading { overflow: hidden; }
   const rdTitle = document.getElementById('rd-title'), rdClient = document.getElementById('rd-client');
   const rdOpen = document.getElementById('rd-open'), rdVideo = document.getElementById('rd-video');
   const cache = {};
-  const slugOf = a => { const m = a.href.match(/\/d\/([\w-]+)/); return m && SCRIPTS[m[1]]; };
+  const urlOf = a => a.dataset.href || a.href;
+  const slugOf = a => { const m = urlOf(a).match(/\/d\/([\w-]+)/); return m && SCRIPTS[m[1]]; };
   const loadScript = async (a, docs) => {
     const slug = slugOf(a);
     rdTitle.textContent = a.textContent.trim();
-    rdOpen.href = a.href;
+    rdOpen.href = urlOf(a);
     [...rdTabs.children].forEach(b => b.setAttribute('aria-selected', b._link === a ? 'true' : 'false'));
     rdBody.classList.add('loading');
     try {
@@ -1007,7 +1008,7 @@ html.reading { overflow: hidden; }
         if (hs.length) t.querySelectorAll('tbody tr').forEach(tr => [...tr.children].forEach((td, i) => hs[i] && td.setAttribute('data-h', hs[i])));
       });
     } catch (e) {
-      rdBody.innerHTML = '<p class="rd-error">Le script n\'a pas pu être chargé ici. <a href="' + a.href + '" target="_blank" rel="noopener">Ouvrez-le dans Google Docs ↗</a></p>';
+      rdBody.innerHTML = '<p class="rd-error">Le script n\'a pas pu être chargé ici. <a href="' + urlOf(a) + '" target="_blank" rel="noopener">Ouvrez-le dans Google Docs ↗</a></p>';
     }
     rdBody.classList.remove('loading');
     rdBody.scrollTop = 0;
@@ -1036,12 +1037,15 @@ html.reading { overflow: hidden; }
   reader.addEventListener('close', () => document.documentElement.classList.remove('reading'));
   document.getElementById('rd-close').addEventListener('click', closeReader);
   reader.addEventListener('click', e => { if (e.target === reader) closeReader(); });
+  // On retire le lien vers Google Docs des boutons « DOC » (il reste dans le panneau) :
+  // certains navigateurs et lecteurs ouvraient l'onglet en plus du panneau.
   document.querySelectorAll('.deliv a.doc').forEach(a => {
     if (!slugOf(a)) return;
-    a.addEventListener('click', e => {
-      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return; // nouvel onglet demandé : on laisse faire
-      e.preventDefault(); openReader(a);
-    });
+    a.dataset.href = a.href;
+    a.removeAttribute('href'); a.removeAttribute('target');
+    a.setAttribute('role', 'button'); a.tabIndex = 0;
+    a.addEventListener('click', e => { e.preventDefault(); openReader(a); });
+    a.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openReader(a); } });
   });
 
   // Menu mobile
