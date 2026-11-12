@@ -45,6 +45,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; animation: none !important; } }
 body {
@@ -442,6 +443,84 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 h2 .w { display: inline-block; }
 h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-delay: calc(var(--i) * .07s); }
 .slug.typing::after { content: ""; display: inline-block; width: .6em; height: 1em; margin-left: 2px; vertical-align: -.15em; background: currentColor; animation: caret .8s steps(1) infinite; }
+/* ---------- Lecteur de scripts (panneau latéral) ---------- */
+html.reading { overflow: hidden; }
+.reader {
+  position: fixed; inset: 0 0 0 auto; margin: 0; width: min(820px, 100%); height: 100%; max-width: 100%; max-height: 100%;
+  padding: 0; border: 0; background: var(--bg); color: var(--fg); box-shadow: -30px 0 60px -30px rgba(0,0,0,.45);
+  display: none; flex-direction: column;
+}
+.reader[open] { display: flex; animation: rd-in .45s cubic-bezier(.2,.7,.2,1); }
+.reader::backdrop { background: rgba(13, 11, 13, .55); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); animation: rd-fade .3s ease; }
+@keyframes rd-in { from { transform: translateX(40px); opacity: 0; } }
+@keyframes rd-fade { from { opacity: 0; } }
+.rd-head {
+  flex: 0 0 auto; background: var(--frame); color: var(--frame-fg); border-bottom: 1px solid var(--frame-line);
+  padding-top: max(18px, env(safe-area-inset-top, 0px)); padding-bottom: 0;
+  padding-left: max(28px, env(safe-area-inset-left, 0px)); padding-right: max(28px, env(safe-area-inset-right, 0px));
+  display: grid; grid-template-columns: 1fr auto; gap: 10px 16px; align-items: start;
+}
+.rd-meta { min-width: 0; }
+.rd-meta .slug { color: var(--frame-accent); }
+.rd-meta h2 { font-size: clamp(28px, 4vw, 40px); margin-top: 4px; }
+.rd-close {
+  width: 40px; height: 40px; border-radius: 8px; border: 1px solid var(--frame-line-strong); background: transparent; color: var(--frame-fg);
+  display: grid; place-items: center; cursor: pointer; transition: border-color .2s, background .2s;
+}
+.rd-close:hover { border-color: var(--frame-fg); }
+.rd-close svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; fill: none; }
+.rd-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; padding-bottom: 16px; }
+.rd-tabs { grid-column: 1 / -1; display: flex; gap: 4px; overflow-x: auto; margin-bottom: -1px; scrollbar-width: none; }
+.rd-tabs button {
+  flex: 0 0 auto; font-family: var(--f-script); font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: .04em;
+  padding: 10px 14px; border: 1px solid transparent; border-bottom: 0; border-radius: 8px 8px 0 0;
+  background: transparent; color: var(--frame-muted); cursor: pointer;
+}
+.rd-tabs button:hover { color: var(--frame-fg); }
+.rd-tabs button[aria-selected="true"] { background: var(--bg); color: var(--fg); border-color: var(--frame-line); }
+.rd-body {
+  flex: 1 1 auto; overflow-y: auto; overscroll-behavior: contain;
+  padding-top: 28px; padding-bottom: max(56px, env(safe-area-inset-bottom, 0px));
+  padding-left: max(28px, env(safe-area-inset-left, 0px)); padding-right: max(28px, env(safe-area-inset-right, 0px));
+}
+.rd-body.loading { opacity: .4; }
+/* Mise en page du script, façon scénario */
+.script { font-size: 17px; line-height: 1.7; }
+.script > * { max-width: 68ch; }
+.script h3 {
+  font-family: var(--f-script); font-weight: 700; font-size: 14px; letter-spacing: .05em; text-transform: uppercase; color: var(--accent);
+  margin: 44px 0 14px; padding-top: 18px; border-top: 1px solid var(--line);
+}
+.script > h3:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+.script h4 { font-family: var(--f-display); font-weight: 800; font-size: 24px; line-height: 1.05; text-transform: uppercase; margin: 28px 0 10px; }
+.script p { margin: 0 0 14px; }
+.script p.lead { font-size: 20px; line-height: 1.5; font-weight: 500; }
+.script em { color: var(--fg); }
+.script strong { font-weight: 600; }
+.script ul, .script ol { margin: 0 0 16px; padding-left: 22px; }
+.script li { margin-bottom: 6px; }
+.script li::marker { color: var(--accent); }
+.script a { color: var(--accent); }
+.script figure { margin: 18px 0; max-width: 100%; }
+.script img { display: block; max-width: min(100%, 420px); height: auto; border-radius: 8px; border: 1px solid var(--line); }
+.sc-table { max-width: none !important; overflow-x: auto; margin: 8px 0 20px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.sc-table table { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.6; }
+.sc-table th { position: sticky; top: 0; text-align: left; font-family: var(--f-script); font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); background: var(--surface); padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.sc-table td { vertical-align: top; padding: 14px 16px; border-bottom: 1px solid var(--line); min-width: 220px; }
+.sc-table td + td, .sc-table th + th { border-left: 1px solid var(--line); }
+.sc-table tr:last-child td { border-bottom: 0; }
+.sc-table td p { margin: 0 0 10px; }
+.rd-error { padding: 20px; border-radius: 10px; background: var(--accent-soft); }
+@media (max-width: 640px) {
+  .rd-head { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .rd-body { padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .script { font-size: 16px; }
+  .sc-table table, .sc-table tbody, .sc-table tr, .sc-table td { display: block; }
+  .sc-table thead { display: none; }
+  .sc-table td { min-width: 0; border-left: 0 !important; }
+  .sc-table td[data-h]::before { content: attr(data-h); display: block; margin-bottom: 6px; font-family: var(--f-script); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+}
+@media (prefers-reduced-motion: reduce) { .reader[open], .reader::backdrop { animation: none; } }
 </style>
 
 <nav class="nav" aria-label="Navigation principale">
@@ -781,6 +860,19 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
   </div>
 </section>
 
+<dialog class="reader" id="reader" aria-labelledby="rd-title">
+  <div class="rd-head">
+    <div class="rd-meta"><div class="slug" id="rd-client"></div><h2 id="rd-title">Script</h2></div>
+    <button class="rd-close" id="rd-close" type="button" aria-label="Fermer le script"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="rd-actions">
+      <a class="mini primary" id="rd-video" href="#" target="_blank" rel="noopener" hidden>▶ Voir la vidéo ↗</a>
+      <a class="mini" id="rd-open" href="#" target="_blank" rel="noopener">Ouvrir dans Google Docs ↗</a>
+    </div>
+    <div class="rd-tabs" id="rd-tabs" role="tablist" aria-label="Documents du projet" hidden></div>
+  </div>
+  <article class="rd-body script" id="rd-body" tabindex="-1"></article>
+</dialog>
+
 <script>
   // Thème : suit l'appareil par défaut, le choix du visiteur est mémorisé
   const root = document.documentElement;
@@ -874,6 +966,83 @@ h2.rising .w { animation: rise .7s cubic-bezier(.2,.7,.2,1) both; animation-dela
       ioTitles.observe(h);
     });
   }
+
+  // Lecteur de scripts : les liens « DOC » s'ouvrent dans un panneau du site au lieu de Google Docs
+  const SCRIPTS = {
+    '13AFK0nPvlNndJckXx-iSCbNp0tdXtjEFY5W5-BSfLjE': 'mctn',
+    '1MTv_EHnDlvtpBopwBFhQm2xAio5HSISCLwcYQRupXgw': 'apix',
+    '1xd3qUsW7-hQyACuYsDdxNe42MtoZEe4NERM6gTewJbY': 'medickane-fr',
+    '1ZoWAiWb6DKZaIkLB95hNyNX8UCrrvcfzAQ_55I42SXU': 'medickane-wo',
+    '1y6v28bWHeMkvCdI0xjdTr9S26hGghpF08EnlC6LRoT8': 'medickane-en',
+    '1A2OXFkdjhqb1XfnSU79OTtrP_8kIoIfgnK0RXQv77uI': 'medickane-decoupage',
+    '1ihSdxMC-H9cKHwpsJkT9mDFvfvYzOV30ec2rVDkGvfk': 'teranga',
+    '16g3wH7nQ9jRtA6eahs1B8UD6oxFoRuSm7_vGAubUfYI': 'neurotech',
+    '1xqhG6YwLIkslva8_akXhTkHd3DGdM1uWgNglB619700': 'mclu',
+    '1nqt-cuYX7wFYOjonRTQz1F7WCc2-riKESrg9asjB8ug': 'baobab',
+    '1RmRoUrgjznYZbaM_m7Nai-zYxLwBk1rJ8CYQnsaASFc': 'djiefall',
+    '1dIdheQDmQK-qD99JRwJsTW8WGevZtyn0Y9rMJTA-52w': 'mission-sens'
+  };
+  const reader = document.getElementById('reader');
+  const rdBody = document.getElementById('rd-body'), rdTabs = document.getElementById('rd-tabs');
+  const rdTitle = document.getElementById('rd-title'), rdClient = document.getElementById('rd-client');
+  const rdOpen = document.getElementById('rd-open'), rdVideo = document.getElementById('rd-video');
+  const cache = {};
+  const slugOf = a => { const m = a.href.match(/\/d\/([\w-]+)/); return m && SCRIPTS[m[1]]; };
+  const loadScript = async (a, docs) => {
+    const slug = slugOf(a);
+    rdTitle.textContent = a.textContent.trim();
+    rdOpen.href = a.href;
+    [...rdTabs.children].forEach(b => b.setAttribute('aria-selected', b._link === a ? 'true' : 'false'));
+    rdBody.classList.add('loading');
+    try {
+      if (!cache[slug]) {
+        const r = await fetch('scripts/' + slug + '.html');
+        if (!r.ok) throw new Error(r.status);
+        cache[slug] = await r.text();
+      }
+      rdBody.innerHTML = cache[slug];
+      // en-têtes de colonnes répétés dans chaque case pour l'affichage mobile
+      rdBody.querySelectorAll('.sc-table table').forEach(t => {
+        const hs = [...t.querySelectorAll('thead th')].map(th => th.textContent);
+        if (hs.length) t.querySelectorAll('tbody tr').forEach(tr => [...tr.children].forEach((td, i) => hs[i] && td.setAttribute('data-h', hs[i])));
+      });
+    } catch (e) {
+      rdBody.innerHTML = '<p class="rd-error">Le script n\'a pas pu être chargé ici. <a href="' + a.href + '" target="_blank" rel="noopener">Ouvrez-le dans Google Docs ↗</a></p>';
+    }
+    rdBody.classList.remove('loading');
+    rdBody.scrollTop = 0;
+  };
+  const openReader = a => {
+    const shot = a.closest('.shot');
+    const client = shot.querySelector('.client');
+    rdClient.textContent = client.childNodes[0].textContent.trim() + ' — ' + (client.querySelector('small')?.textContent || '');
+    const docs = [...shot.querySelectorAll('.deliv a.doc')].filter(slugOf);
+    rdTabs.innerHTML = '';
+    rdTabs.hidden = docs.length < 2;
+    docs.forEach(d => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.setAttribute('role', 'tab'); b.textContent = d.textContent.trim(); b._link = d;
+      b.addEventListener('click', () => loadScript(d, docs));
+      rdTabs.appendChild(b);
+    });
+    const vid = shot.querySelector('.deliv a.vid');
+    rdVideo.hidden = !vid; if (vid) rdVideo.href = vid.href;
+    document.documentElement.classList.add('reading');
+    if (!reader.open) reader.showModal();
+    loadScript(a, docs);
+    rdBody.focus({ preventScroll: true });
+  };
+  const closeReader = () => reader.close();
+  reader.addEventListener('close', () => document.documentElement.classList.remove('reading'));
+  document.getElementById('rd-close').addEventListener('click', closeReader);
+  reader.addEventListener('click', e => { if (e.target === reader) closeReader(); });
+  document.querySelectorAll('.deliv a.doc').forEach(a => {
+    if (!slugOf(a)) return;
+    a.addEventListener('click', e => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return; // nouvel onglet demandé : on laisse faire
+      e.preventDefault(); openReader(a);
+    });
+  });
 
   // Menu mobile
   const nav = document.querySelector('.nav');
