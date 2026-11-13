@@ -75,6 +75,20 @@ section { padding-block: clamp(64px, 9vw, 112px); }
 .sec-head { display: grid; gap: 8px; margin-bottom: 40px; max-width: 760px; }
 .sec-head p { color: var(--muted); margin: 10px 0 0; max-width: 60ch; }
 
+
+/* ---------- Icônes des boutons (SVG en masque, prennent la couleur du texte) ---------- */
+.i { display: inline-block; flex: 0 0 auto; width: 16px; height: 16px; background: currentColor;
+  -webkit-mask: var(--m) center / contain no-repeat; mask: var(--m) center / contain no-repeat; transition: transform .25s cubic-bezier(.2,.7,.2,1); }
+.i-arrow { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14M13 6l6 6-6 6'/%3E%3C/svg%3E"); }
+.i-down { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14M6 13l6 6 6-6'/%3E%3C/svg%3E"); }
+.i-out { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17L17 7M9 7h8v8'/%3E%3C/svg%3E"); }
+.i-play { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='black'%3E%3Cpath d='M8 5.5v13l10.5-6.5z'/%3E%3C/svg%3E"); }
+.i-copy { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='11' height='11' rx='2'/%3E%3Cpath d='M5 15V6a2 2 0 0 1 2-2h9'/%3E%3C/svg%3E"); }
+.i-check { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7'/%3E%3C/svg%3E"); }
+.i-mail { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='5' width='18' height='14' rx='2'/%3E%3Cpath d='M3.5 7l8.5 6 8.5-6'/%3E%3C/svg%3E"); }
+.i-wa { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.5 11.6a8.5 8.5 0 0 1-12.4 7.6L3.5 20.5l1.4-4.4a8.5 8.5 0 1 1 15.6-4.5z'/%3E%3C/svg%3E"); }
+.i-ig { --m: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3.5' y='3.5' width='17' height='17' rx='5'/%3E%3Ccircle cx='12' cy='12' r='3.8'/%3E%3Cpath d='M17 7h.01'/%3E%3C/svg%3E"); }
+
 /* ---------- Nav ---------- */
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--frame); }
 .nav {
@@ -90,18 +104,23 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .nav ul a { text-decoration: none; color: var(--frame-muted); transition: color .2s; }
 .nav ul a:hover { color: var(--frame-fg); }
 .btn {
-  display: inline-flex; align-items: center; gap: 10px;
-  font-family: var(--f-body); font-weight: 600; font-size: 14px; line-height: 1.2;
-  padding: 7px 14px; border-radius: 8px; text-decoration: none;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 42px;
+  font-family: var(--f-body); font-weight: 600; font-size: 14.5px; line-height: 1; white-space: nowrap;
+  padding: 0 18px; border-radius: 8px; text-decoration: none;
   background: var(--frame-accent); color: var(--on-accent); border: 0; cursor: pointer;
-  transition: transform .2s, background .2s;
+  box-shadow: 0 6px 18px -10px color-mix(in srgb, var(--frame-accent) 80%, transparent);
+  transition: transform .2s, background .2s, box-shadow .2s;
 }
 .btn:hover { transform: translateY(-1px); background: var(--accent-hover); }
+.btn:active { transform: translateY(0); }
+.btn:hover .i-arrow { transform: translateX(3px); }
+.btn:hover .i-down { transform: translateY(2px); }
 .btn.ghost { background: transparent; color: var(--frame-fg); box-shadow: inset 0 0 0 1px var(--frame-line-strong); }
-.btn.ghost:hover { box-shadow: inset 0 0 0 1px var(--frame-fg); background: transparent; }
+.btn.ghost:hover { box-shadow: inset 0 0 0 1px var(--frame-fg); background: color-mix(in srgb, var(--frame-fg) 6%, transparent); }
+.nav .btn { height: 36px; padding: 0 14px; font-size: 14px; box-shadow: none; }
 .nav-actions { display: flex; align-items: center; gap: 10px; }
 .theme-toggle {
-  width: 34px; height: 34px; border-radius: 8px; border: 1px solid var(--frame-line-strong); flex: 0 0 auto;
+  width: 36px; height: 36px; border-radius: 8px; border: 1px solid var(--frame-line-strong); flex: 0 0 auto;
   background: transparent; color: var(--frame-muted); cursor: pointer;
   display: grid; place-items: center; transition: color .2s, border-color .2s;
 }
@@ -293,13 +312,15 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .projects { background: var(--surface); border-block: 1px solid var(--line); }
 .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
 .chip {
-  font-family: var(--f-script); font-weight: 700; font-size: 12px; text-transform: uppercase;
-  padding: 4px 10px; border-radius: 8px; border: 1px solid var(--line);
-  background: transparent; color: var(--muted); cursor: pointer; transition: all .2s;
+  display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 8px 0 12px;
+  font-family: var(--f-script); font-weight: 700; font-size: 12px; line-height: 1; letter-spacing: .04em; text-transform: uppercase;
+  border-radius: 8px; border: 1px solid var(--line); background: var(--surface); color: var(--muted); cursor: pointer;
+  transition: color .2s, border-color .2s, background .2s;
 }
 .chip:hover { color: var(--fg); border-color: var(--fg); }
 .chip[aria-pressed="true"] { background: var(--fg); color: var(--bg); border-color: var(--fg); }
-.chip small { font-weight: 400; opacity: .7; margin-left: 4px; }
+.chip small { display: inline-grid; place-items: center; min-width: 22px; height: 20px; padding: 0 5px; border-radius: 5px; font-weight: 700; font-size: 11px; background: var(--line); color: var(--fg); }
+.chip[aria-pressed="true"] small { background: color-mix(in srgb, var(--bg) 22%, transparent); color: var(--bg); }
 
 .shotlist { border-top: 2px solid var(--fg); }
 .shot-head, .shot { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.5fr) minmax(0, 1.4fr); gap: 24px; }
@@ -359,7 +380,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   color: #fff; display: flex; justify-content: space-between; align-items: center;
   text-shadow: 0 1px 6px rgba(0,0,0,.6);
 }
-.reel .play i { font-style: normal; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.92); color: #111; text-shadow: none; font-size: 11px; }
+.reel .play i { font-style: normal; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.94); color: #19151a; box-shadow: 0 4px 14px rgba(0,0,0,.3); transition: transform .25s; }
+.reel .play i .i { width: 14px; height: 14px; margin-left: 2px; }
+.reel:hover .play i { transform: scale(1.1); }
 @media (max-width: 960px) { .reels { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 480px) { .reels { grid-template-columns: repeat(2, 1fr); } }
 
@@ -373,7 +396,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .viral b { font-family: var(--f-display); font-weight: 900; font-size: 46px; line-height: 1; color: var(--frame-accent); font-variant-numeric: tabular-nums; }
 .viral span { font-size: 15px; color: var(--frame-muted); line-height: 1.4; min-width: 0; }
 .viral span strong { color: var(--frame-fg); font-weight: 600; display: block; }
-.viral em { font-style: normal; font-family: var(--f-script); font-size: 13px; color: var(--frame-fg); }
+.viral em { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 8px; box-shadow: inset 0 0 0 1px var(--frame-line-strong); color: var(--frame-fg); transition: background .2s, color .2s, box-shadow .2s; }
+.viral a:hover em { background: var(--frame-accent); color: var(--on-accent); box-shadow: none; }
+.viral a:hover em .i { transform: translate(2px, -2px); }
 @media (max-width: 720px) { .viral { grid-template-columns: 1fr; } .viral a { grid-template-columns: auto 1fr; } .viral em { display: none; } }
 
 /* ---------- Témoignages ---------- */
@@ -425,12 +450,16 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .ccard .v { font-size: 20px; font-weight: 500; overflow-wrap: anywhere; user-select: all; }
 .ccard .row { display: flex; flex-wrap: wrap; gap: 8px; }
 .mini {
-  font-family: var(--f-body); font-size: 12px; font-weight: 600; line-height: 1.2; text-decoration: none;
-  padding: 4px 10px; border-radius: 8px; cursor: pointer;
-  background: transparent; color: var(--frame-fg); border: 1px solid var(--frame-line-strong); transition: border-color .2s;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px; height: 34px;
+  font-family: var(--f-body); font-size: 13px; font-weight: 600; line-height: 1; white-space: nowrap; text-decoration: none;
+  padding: 0 12px; border-radius: 8px; cursor: pointer;
+  background: transparent; color: var(--frame-fg); border: 1px solid var(--frame-line-strong); transition: border-color .2s, background .2s, transform .2s;
 }
-.mini:hover { border-color: var(--frame-fg); }
+.mini .i { width: 15px; height: 15px; }
+.mini:hover { border-color: var(--frame-fg); background: color-mix(in srgb, var(--frame-fg) 6%, transparent); }
+.mini:hover .i-out { transform: translate(2px, -2px); }
 .mini.primary { background: var(--frame-accent); border-color: var(--frame-accent); color: var(--on-accent); }
+.mini.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
 .foot { margin-top: 64px; padding-top: 22px; border-top: 1px solid var(--frame-line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-family: var(--f-script); font-size: 13px; color: var(--frame-muted); }
 @media (max-width: 860px) { .contact-grid { grid-template-columns: 1fr; } }
 /* ---------- Apparitions au défilement ----------
@@ -553,7 +582,7 @@ html.reading { overflow: hidden; }
         <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></svg>
         <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
       </button>
-      <a class="btn" href="#contact">Travaillons ensemble</a>
+      <a class="btn" href="#contact">Travaillons ensemble<span class="i i-arrow" aria-hidden="true"></span></a>
     </div>
     <button class="burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="mobile-menu"><span></span></button>
   </div>
@@ -563,7 +592,7 @@ html.reading { overflow: hidden; }
       <a href="#projets">Projets</a>
       <a href="#contenus">Contenus</a>
       <a href="#avis">Avis</a>
-      <a class="btn" href="#contact">Travaillons ensemble</a>
+      <a class="btn" href="#contact">Travaillons ensemble<span class="i i-arrow" aria-hidden="true"></span></a>
     </div>
   </div>
 </nav>
@@ -577,8 +606,8 @@ html.reading { overflow: hidden; }
         <li style="--i:0">Copywriter</li><li style="--i:1">Creative Director</li><li style="--i:2">Brand Strategist</li><li style="--i:3">Vidéaste &amp; monteur</li>
       </ul>
       <div class="hero-cta">
-        <a class="btn" href="#projets">Voir les projets</a>
-        <a class="btn ghost" href="#contact">Me contacter</a>
+        <a class="btn" href="#projets">Voir les projets<span class="i i-down" aria-hidden="true"></span></a>
+        <a class="btn ghost" href="#contact">Me contacter<span class="i i-arrow" aria-hidden="true"></span></a>
       </div>
     </div>
     <figure class="portrait">
@@ -790,16 +819,16 @@ html.reading { overflow: hidden; }
       <p>Des formats courts où je décortique des campagnes et des leçons de marketing. Tournés et montés par moi.</p>
     </div>
     <div class="reels">
-      <a class="reel" href="https://www.instagram.com/reel/CeR4BLnqmIv/" target="_blank" rel="noopener"><img src="img/reel-1.jpg" alt="Analyse : So' Fatoo!" loading="lazy"><span class="play">Analyse<i>▶</i></span></a>
-      <a class="reel" href="https://www.instagram.com/reel/Cerigb2K4ln/" target="_blank" rel="noopener"><img src="img/reel-2.jpg" alt="Ne vendez jamais votre produit ! Partie 1" loading="lazy"><span class="play">Partie 1<i>▶</i></span></a>
-      <a class="reel" href="https://www.instagram.com/reel/CeuERKyK7eE/" target="_blank" rel="noopener"><img src="img/reel-3.jpg" alt="Ne vendez jamais votre produit ! Partie 2" loading="lazy"><span class="play">Partie 2<i>▶</i></span></a>
-      <a class="reel" href="https://www.instagram.com/reel/CfzwZwBquDy/" target="_blank" rel="noopener"><img src="img/reel-4.jpg" alt="Devenez remarquable et vendez plus" loading="lazy"><span class="play">Marketing<i>▶</i></span></a>
-      <a class="reel" href="https://www.instagram.com/reel/Cgpp9L7KWlq/" target="_blank" rel="noopener"><img src="img/reel-5.jpg" alt="Analyse : Ba Eau Bab! Partie 1" loading="lazy"><span class="play">Partie 1<i>▶</i></span></a>
-      <a class="reel" href="https://www.instagram.com/reel/Cg7vNUWK-la/" target="_blank" rel="noopener"><img src="img/reel-6.jpg" alt="Analyse : Ba Eau Bab! Partie 2" loading="lazy"><span class="play">Partie 2<i>▶</i></span></a>
+      <a class="reel" href="https://www.instagram.com/reel/CeR4BLnqmIv/" target="_blank" rel="noopener"><img src="img/reel-1.jpg" alt="Analyse : So' Fatoo!" loading="lazy"><span class="play">Analyse<i><span class="i i-play" aria-hidden="true"></span></i></span></a>
+      <a class="reel" href="https://www.instagram.com/reel/Cerigb2K4ln/" target="_blank" rel="noopener"><img src="img/reel-2.jpg" alt="Ne vendez jamais votre produit ! Partie 1" loading="lazy"><span class="play">Partie 1<i><span class="i i-play" aria-hidden="true"></span></i></span></a>
+      <a class="reel" href="https://www.instagram.com/reel/CeuERKyK7eE/" target="_blank" rel="noopener"><img src="img/reel-3.jpg" alt="Ne vendez jamais votre produit ! Partie 2" loading="lazy"><span class="play">Partie 2<i><span class="i i-play" aria-hidden="true"></span></i></span></a>
+      <a class="reel" href="https://www.instagram.com/reel/CfzwZwBquDy/" target="_blank" rel="noopener"><img src="img/reel-4.jpg" alt="Devenez remarquable et vendez plus" loading="lazy"><span class="play">Marketing<i><span class="i i-play" aria-hidden="true"></span></i></span></a>
+      <a class="reel" href="https://www.instagram.com/reel/Cgpp9L7KWlq/" target="_blank" rel="noopener"><img src="img/reel-5.jpg" alt="Analyse : Ba Eau Bab! Partie 1" loading="lazy"><span class="play">Partie 1<i><span class="i i-play" aria-hidden="true"></span></i></span></a>
+      <a class="reel" href="https://www.instagram.com/reel/Cg7vNUWK-la/" target="_blank" rel="noopener"><img src="img/reel-6.jpg" alt="Analyse : Ba Eau Bab! Partie 2" loading="lazy"><span class="play">Partie 2<i><span class="i i-play" aria-hidden="true"></span></i></span></a>
     </div>
     <div class="viral">
-      <a href="https://www.instagram.com/reel/C5Vo-n_IBXT/" target="_blank" rel="noopener"><b>68,8k</b><span><strong>vues · 2,5k likes</strong>Vidéo virale tournée au téléphone</span><em>Voir ↗</em></a>
-      <a href="https://www.instagram.com/reel/C3NLMbIrNPH/" target="_blank" rel="noopener"><b>49,3k</b><span><strong>vues · 2k likes</strong>Vidéo virale tournée au téléphone</span><em>Voir ↗</em></a>
+      <a href="https://www.instagram.com/reel/C5Vo-n_IBXT/" target="_blank" rel="noopener"><b>68,8k</b><span><strong>vues · 2,5k likes</strong>Vidéo virale tournée au téléphone</span><em aria-label="Voir"><span class="i i-out" aria-hidden="true"></span></em></a>
+      <a href="https://www.instagram.com/reel/C3NLMbIrNPH/" target="_blank" rel="noopener"><b>49,3k</b><span><strong>vues · 2k likes</strong>Vidéo virale tournée au téléphone</span><em aria-label="Voir"><span class="i i-out" aria-hidden="true"></span></em></a>
     </div>
   </div>
 </section>
@@ -859,17 +888,17 @@ html.reading { overflow: hidden; }
       <div class="ccard">
         <span class="k">E‑mail</span>
         <span class="v" id="email">ansou080@gmail.com</span>
-        <div class="row"><button class="mini primary" id="copy-email" data-copy="ansou080@gmail.com">Copier</button><a class="mini" href="mailto:ansou080@gmail.com">Écrire</a></div>
+        <div class="row"><button class="mini primary" id="copy-email" data-copy="ansou080@gmail.com"><span class="i i-copy" aria-hidden="true"></span><span class="lbl">Copier</span></button><a class="mini" href="mailto:ansou080@gmail.com"><span class="i i-mail" aria-hidden="true"></span>Écrire</a></div>
       </div>
       <div class="ccard">
         <span class="k">Téléphone / WhatsApp</span>
         <span class="v" id="phone">+221 76 885 85 99</span>
-        <div class="row"><button class="mini primary" id="copy-phone" data-copy="+221768858599">Copier</button><a class="mini" href="https://wa.me/221768858599" target="_blank" rel="noopener">WhatsApp ↗</a></div>
+        <div class="row"><button class="mini primary" id="copy-phone" data-copy="+221768858599"><span class="i i-copy" aria-hidden="true"></span><span class="lbl">Copier</span></button><a class="mini" href="https://wa.me/221768858599" target="_blank" rel="noopener"><span class="i i-wa" aria-hidden="true"></span>WhatsApp<span class="i i-out" aria-hidden="true"></span></a></div>
       </div>
       <div class="ccard">
         <span class="k">Instagram</span>
         <span class="v">@ansouthiam_</span>
-        <div class="row"><a class="mini primary" href="https://www.instagram.com/ansouthiam_/" target="_blank" rel="noopener">Voir le profil ↗</a></div>
+        <div class="row"><a class="mini primary" href="https://www.instagram.com/ansouthiam_/" target="_blank" rel="noopener"><span class="i i-ig" aria-hidden="true"></span>Voir le profil<span class="i i-out" aria-hidden="true"></span></a></div>
       </div>
     </div>
     <div class="foot"><span>© Ansoumana Thiam — Dakar, Sénégal</span><span>Copywriting · Brand strategy · Vidéo</span></div>
@@ -881,8 +910,8 @@ html.reading { overflow: hidden; }
     <div class="rd-meta"><div class="slug" id="rd-client"></div><h2 id="rd-title">Script</h2></div>
     <button class="rd-close" id="rd-close" type="button" aria-label="Fermer le script"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <div class="rd-actions">
-      <a class="mini primary" id="rd-video" href="#" target="_blank" rel="noopener" hidden>▶ Voir la vidéo ↗</a>
-      <a class="mini" id="rd-open" href="#" target="_blank" rel="noopener">Ouvrir dans Google Docs ↗</a>
+      <a class="mini primary" id="rd-video" href="#" target="_blank" rel="noopener" hidden><span class="i i-play" aria-hidden="true"></span>Voir la vidéo<span class="i i-out" aria-hidden="true"></span></a>
+      <a class="mini" id="rd-open" href="#" target="_blank" rel="noopener">Ouvrir dans Google Docs<span class="i i-out" aria-hidden="true"></span></a>
     </div>
     <div class="rd-tabs" id="rd-tabs" role="tablist" aria-label="Documents du projet" hidden></div>
   </div>
@@ -1165,8 +1194,11 @@ html.reading { overflow: hidden; }
 
   // Boutons copier
   document.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', () => {
-    const label = b.textContent;
-    const done = ok => { b.textContent = ok ? 'Copié' : 'Sélectionnez le texte'; setTimeout(() => b.textContent = label, 1600); };
+    const lbl = b.querySelector('.lbl') || b, ic = b.querySelector('.i'), label = lbl.textContent;
+    const done = ok => {
+      lbl.textContent = ok ? 'Copié' : 'Sélectionnez le texte'; if (ok && ic) ic.classList.replace('i-copy', 'i-check');
+      setTimeout(() => { lbl.textContent = label; if (ic) ic.classList.replace('i-check', 'i-copy'); }, 1600);
+    };
     if (navigator.clipboard) navigator.clipboard.writeText(b.dataset.copy).then(() => done(true), () => done(false));
     else done(false);
   }));
