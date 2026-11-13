@@ -684,10 +684,10 @@ html.reading { overflow: hidden; }
         <div class="client">Clinique Medic'Kane<small>Santé · Dakar</small></div>
         <div class="mission"><p>Spot décliné en <strong>trois langues</strong> avec découpage technique complet.</p><div class="tags"><span class="tag">FR</span><span class="tag">Wolof</span><span class="tag">EN</span><span class="tag">Vidéo</span></div></div>
         <div class="deliv">
-          <a class="doc" href="https://docs.google.com/document/u/0/d/1xd3qUsW7-hQyACuYsDdxNe42MtoZEe4NERM6gTewJbY/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script FR</span></a>
-          <a class="doc" href="https://docs.google.com/document/d/1ZoWAiWb6DKZaIkLB95hNyNX8UCrrvcfzAQ_55I42SXU/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script Wolof</span></a>
-          <a class="doc" href="https://docs.google.com/document/u/0/d/1y6v28bWHeMkvCdI0xjdTr9S26hGghpF08EnlC6LRoT8/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script EN</span></a>
-          <a class="doc" href="https://docs.google.com/document/u/0/d/1A2OXFkdjhqb1XfnSU79OTtrP_8kIoIfgnK0RXQv77uI/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Découpage technique</span></a>
+          <a class="doc" data-title="Script FR" href="https://docs.google.com/document/u/0/d/1xd3qUsW7-hQyACuYsDdxNe42MtoZEe4NERM6gTewJbY/edit" target="_blank" rel="noopener"><span class="dv-k">Lire les scripts</span><span class="dv-t">FR · Wolof · EN · Découpage</span></a>
+          <a class="doc" hidden href="https://docs.google.com/document/d/1ZoWAiWb6DKZaIkLB95hNyNX8UCrrvcfzAQ_55I42SXU/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script Wolof</span></a>
+          <a class="doc" hidden href="https://docs.google.com/document/u/0/d/1y6v28bWHeMkvCdI0xjdTr9S26hGghpF08EnlC6LRoT8/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script EN</span></a>
+          <a class="doc" hidden href="https://docs.google.com/document/u/0/d/1A2OXFkdjhqb1XfnSU79OTtrP_8kIoIfgnK0RXQv77uI/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Découpage technique</span></a>
           <a class="vid" href="https://www.youtube.com/watch?v=2Mzvm3t8Ul0" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Vidéo finale</span></a>
         </div>
       </div>
@@ -1000,7 +1000,7 @@ html.reading { overflow: hidden; }
   const rdOpen = document.getElementById('rd-open'), rdVideo = document.getElementById('rd-video');
   const cache = {};
   const urlOf = a => a.dataset.href || a.href;
-  const titleOf = a => (a.querySelector('.dv-t') || a).textContent.trim();
+  const titleOf = a => a.dataset.title || (a.querySelector('.dv-t') || a).textContent.trim();
   const slugOf = a => { const m = urlOf(a).match(/\/d\/([\w-]+)/); return m && SCRIPTS[m[1]]; };
   const loadScript = async (a, docs) => {
     const slug = slugOf(a);
