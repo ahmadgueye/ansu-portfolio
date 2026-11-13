@@ -888,12 +888,12 @@ html.reading { overflow: hidden; }
       <div class="ccard">
         <span class="k">E‑mail</span>
         <span class="v" id="email">ansou080@gmail.com</span>
-        <div class="row"><button class="mini primary" id="copy-email" data-copy="ansou080@gmail.com"><span class="i i-copy" aria-hidden="true"></span><span class="lbl">Copier</span></button><a class="mini" href="mailto:ansou080@gmail.com"><span class="i i-mail" aria-hidden="true"></span>Écrire</a></div>
+        <div class="row"><a class="mini primary" href="mailto:ansou080@gmail.com"><span class="i i-mail" aria-hidden="true"></span>Envoyer un e-mail</a></div>
       </div>
       <div class="ccard">
         <span class="k">Téléphone / WhatsApp</span>
         <span class="v" id="phone">+221 76 885 85 99</span>
-        <div class="row"><button class="mini primary" id="copy-phone" data-copy="+221768858599"><span class="i i-copy" aria-hidden="true"></span><span class="lbl">Copier</span></button><a class="mini" href="https://wa.me/221768858599" target="_blank" rel="noopener"><span class="i i-wa" aria-hidden="true"></span>WhatsApp<span class="i i-out" aria-hidden="true"></span></a></div>
+        <div class="row"><a class="mini primary" href="https://wa.me/221768858599" target="_blank" rel="noopener"><span class="i i-wa" aria-hidden="true"></span>Écrire sur WhatsApp<span class="i i-out" aria-hidden="true"></span></a></div>
       </div>
       <div class="ccard">
         <span class="k">Instagram</span>
@@ -1192,14 +1192,5 @@ html.reading { overflow: hidden; }
   const marquee = document.getElementById('marquee');
   [...marquee.children].forEach(l => { const c = l.cloneNode(true); c.setAttribute('aria-hidden', 'true'); marquee.appendChild(c); });
 
-  // Boutons copier
-  document.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', () => {
-    const lbl = b.querySelector('.lbl') || b, ic = b.querySelector('.i'), label = lbl.textContent;
-    const done = ok => {
-      lbl.textContent = ok ? 'Copié' : 'Sélectionnez le texte'; if (ok && ic) ic.classList.replace('i-copy', 'i-check');
-      setTimeout(() => { lbl.textContent = label; if (ic) ic.classList.replace('i-check', 'i-copy'); }, 1600);
-    };
-    if (navigator.clipboard) navigator.clipboard.writeText(b.dataset.copy).then(() => done(true), () => done(false));
-    else done(false);
-  }));
+
 </script>
