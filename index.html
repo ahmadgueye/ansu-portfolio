@@ -22,6 +22,7 @@
   --frame-line-strong: #c3b9bd;
   --on-accent: #ffffff;
   --accent-hover: #a32c3d;
+  --ink: #19151a;           /* pastilles d'icônes sombres (vidéo) */
 
   --f-display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
   --f-body: "Familjen Grotesk", "Helvetica Neue", Arial, sans-serif;
@@ -32,7 +33,7 @@
     --bg: #1c181c; --surface: #252025; --fg: #efe9eb; --muted: #a39aa0;
     --line: #3a3239; --accent: #e0707c; --accent-soft: #3a1f25; --tile: #e9e4e6;
     --frame: #0d0b0d; --frame-fg: #f4efef; --frame-muted: #a59ca1; --frame-accent: #e0707c;
-    --frame-line: #2a2429; --frame-line-strong: #4a4148; --on-accent: #1a0d10; --accent-hover: #ec8d97;
+    --frame-line: #2a2429; --frame-line-strong: #4a4148; --on-accent: #1a0d10; --accent-hover: #ec8d97; --ink: #4a4148;
     color-scheme: dark;
   }
 }
@@ -40,7 +41,7 @@
   --bg: #1c181c; --surface: #252025; --fg: #efe9eb; --muted: #a39aa0;
   --line: #3a3239; --accent: #e0707c; --accent-soft: #3a1f25; --tile: #e9e4e6;
     --frame: #0d0b0d; --frame-fg: #f4efef; --frame-muted: #a59ca1; --frame-accent: #e0707c;
-    --frame-line: #2a2429; --frame-line-strong: #4a4148; --on-accent: #1a0d10; --accent-hover: #ec8d97;
+    --frame-line: #2a2429; --frame-line-strong: #4a4148; --on-accent: #1a0d10; --accent-hover: #ec8d97; --ink: #4a4148;
     color-scheme: dark;
 }
 
@@ -312,17 +313,28 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
 .tag { font-family: var(--f-script); font-size: 12px; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; background: var(--accent-soft); color: var(--accent); }
 .deliv { display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
+/* Boutons livrables : pastille d'icône + action + titre + flèche, pour qu'on voie qu'ils se cliquent */
 .deliv a {
-  display: inline-flex; align-items: center; gap: 6px; cursor: pointer;
-  font-size: 13px; font-weight: 500; line-height: 1.3; text-decoration: none;
-  padding: 4px 9px; border-radius: 5px; border: 1px solid var(--line); background: var(--bg);
-  transition: border-color .2s, color .2s;
+  --ic: var(--accent);
+  display: inline-grid; grid-template-columns: 30px auto 14px; align-items: center; column-gap: 10px;
+  padding: 6px 12px 6px 6px; border-radius: 8px; cursor: pointer; text-decoration: none; color: var(--fg);
+  background: var(--surface); border: 1px solid var(--line); box-shadow: 0 1px 2px rgba(25, 21, 26, .06);
+  transition: border-color .2s, background .2s, box-shadow .2s, transform .2s;
 }
-.deliv a:hover { border-color: var(--accent); color: var(--accent); }
-.deliv a::before { font-family: var(--f-script); font-size: 11px; font-weight: 700; color: var(--accent); }
-.deliv a.doc::before { content: "DOC"; }
-.deliv a.vid::before { content: "▶"; }
-.deliv a.web::before { content: "↗"; }
+.deliv a::before {
+  content: ""; grid-row: 1 / 3; width: 30px; height: 30px; border-radius: 6px;
+  background: var(--ic) var(--icon) center / 16px no-repeat;
+}
+.deliv a::after { content: "→"; grid-column: 3; grid-row: 1 / 3; font-size: 14px; line-height: 1; color: var(--muted); transition: transform .2s, color .2s; }
+.deliv a.vid::after, .deliv a.web::after { content: "↗"; }
+.deliv .dv-k { grid-column: 2; font-family: var(--f-script); font-size: 10px; font-weight: 700; line-height: 1.2; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+.deliv .dv-t { grid-column: 2; font-size: 13.5px; font-weight: 600; line-height: 1.25; }
+.deliv a.doc { --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z'/%3E%3Cpath d='M14 3v5h5M9 13h6M9 17h4'/%3E%3C/svg%3E"); }
+.deliv a.vid { --ic: var(--ink); --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M8.5 5.5v13l10-6.5z' fill='white'/%3E%3C/svg%3E"); }
+.deliv a.web { --ic: var(--muted); --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M3 12h18M12 3c3 3.5 3 14.5 0 18M12 3c-3 3.5-3 14.5 0 18'/%3E%3C/svg%3E"); }
+.deliv a:hover { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 6px 16px -10px rgba(140, 36, 51, .5); transform: translateY(-1px); }
+.deliv a:hover::after { color: var(--accent); transform: translateX(3px); }
+.deliv a.vid:hover::after, .deliv a.web:hover::after { transform: translate(2px, -2px); }
 .highlight { font-family: var(--f-display); font-weight: 800; font-size: 22px; color: var(--accent); text-transform: uppercase; }
 @media (max-width: 860px) {
   .shot-head { display: none; }
@@ -654,8 +666,8 @@ html.reading { overflow: hidden; }
         <div class="client">Ministère de la Communication<small>Télécommunications et Numérique · Sénégal</small></div>
         <div class="mission"><p>Lancement du <strong>New Deal Technologique</strong>.</p><div class="tags"><span class="tag">Script VO</span><span class="tag">Découpage</span><span class="tag">Vidéo</span></div></div>
         <div class="deliv">
-          <a class="doc" href="https://docs.google.com/document/d/13AFK0nPvlNndJckXx-iSCbNp0tdXtjEFY5W5-BSfLjE/edit?usp=drivesdk" target="_blank" rel="noopener">Script VO + découpage</a>
-          <a class="vid" href="https://www.instagram.com/reel/DGeVh_QNe_N/" target="_blank" rel="noopener">Vidéo finale</a>
+          <a class="doc" href="https://docs.google.com/document/d/13AFK0nPvlNndJckXx-iSCbNp0tdXtjEFY5W5-BSfLjE/edit?usp=drivesdk" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script VO + découpage</span></a>
+          <a class="vid" href="https://www.instagram.com/reel/DGeVh_QNe_N/" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Vidéo finale</span></a>
         </div>
       </div>
 
@@ -663,8 +675,8 @@ html.reading { overflow: hidden; }
         <div class="client">APIX SA<small>Film FII Sénégal</small></div>
         <div class="mission"><p>Film de présentation du <strong>Forum Invest in Sénégal</strong>.</p><div class="tags"><span class="tag">Script VO</span><span class="tag">Découpage</span><span class="tag">Film</span></div></div>
         <div class="deliv">
-          <a class="doc" href="https://docs.google.com/document/d/1MTv_EHnDlvtpBopwBFhQm2xAio5HSISCLwcYQRupXgw/edit?usp=sharing" target="_blank" rel="noopener">Script VO + découpage</a>
-          <a class="vid" href="https://www.instagram.com/reel/DPlZinwjYlS/" target="_blank" rel="noopener">Film FII Sénégal</a>
+          <a class="doc" href="https://docs.google.com/document/d/1MTv_EHnDlvtpBopwBFhQm2xAio5HSISCLwcYQRupXgw/edit?usp=sharing" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script VO + découpage</span></a>
+          <a class="vid" href="https://www.instagram.com/reel/DPlZinwjYlS/" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Film FII Sénégal</span></a>
         </div>
       </div>
 
@@ -672,11 +684,11 @@ html.reading { overflow: hidden; }
         <div class="client">Clinique Medic'Kane<small>Santé · Dakar</small></div>
         <div class="mission"><p>Spot décliné en <strong>trois langues</strong> avec découpage technique complet.</p><div class="tags"><span class="tag">FR</span><span class="tag">Wolof</span><span class="tag">EN</span><span class="tag">Vidéo</span></div></div>
         <div class="deliv">
-          <a class="doc" href="https://docs.google.com/document/u/0/d/1xd3qUsW7-hQyACuYsDdxNe42MtoZEe4NERM6gTewJbY/edit" target="_blank" rel="noopener">Script FR</a>
-          <a class="doc" href="https://docs.google.com/document/d/1ZoWAiWb6DKZaIkLB95hNyNX8UCrrvcfzAQ_55I42SXU/edit" target="_blank" rel="noopener">Script Wolof</a>
-          <a class="doc" href="https://docs.google.com/document/u/0/d/1y6v28bWHeMkvCdI0xjdTr9S26hGghpF08EnlC6LRoT8/edit" target="_blank" rel="noopener">Script EN</a>
-          <a class="doc" href="https://docs.google.com/document/u/0/d/1A2OXFkdjhqb1XfnSU79OTtrP_8kIoIfgnK0RXQv77uI/edit" target="_blank" rel="noopener">Découpage technique</a>
-          <a class="vid" href="https://www.youtube.com/watch?v=2Mzvm3t8Ul0" target="_blank" rel="noopener">Vidéo finale</a>
+          <a class="doc" href="https://docs.google.com/document/u/0/d/1xd3qUsW7-hQyACuYsDdxNe42MtoZEe4NERM6gTewJbY/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script FR</span></a>
+          <a class="doc" href="https://docs.google.com/document/d/1ZoWAiWb6DKZaIkLB95hNyNX8UCrrvcfzAQ_55I42SXU/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script Wolof</span></a>
+          <a class="doc" href="https://docs.google.com/document/u/0/d/1y6v28bWHeMkvCdI0xjdTr9S26hGghpF08EnlC6LRoT8/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script EN</span></a>
+          <a class="doc" href="https://docs.google.com/document/u/0/d/1A2OXFkdjhqb1XfnSU79OTtrP_8kIoIfgnK0RXQv77uI/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Découpage technique</span></a>
+          <a class="vid" href="https://www.youtube.com/watch?v=2Mzvm3t8Ul0" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Vidéo finale</span></a>
         </div>
       </div>
 
@@ -684,8 +696,8 @@ html.reading { overflow: hidden; }
         <div class="client">Institut Français<small>Teranga Tech Incub</small></div>
         <div class="mission"><p>Présentation de l'incubateur.</p><div class="tags"><span class="tag">Script</span><span class="tag">Découpage</span><span class="tag">Vidéo</span></div></div>
         <div class="deliv">
-          <a class="doc" href="https://docs.google.com/document/u/0/d/1ihSdxMC-H9cKHwpsJkT9mDFvfvYzOV30ec2rVDkGvfk/edit" target="_blank" rel="noopener">Script + découpage</a>
-          <a class="vid" href="https://www.linkedin.com/posts/yannickdorego_dakar-saintlouis-kaolack-ugcPost-7180557160257355777-8e-5" target="_blank" rel="noopener">Vidéo finale</a>
+          <a class="doc" href="https://docs.google.com/document/u/0/d/1ihSdxMC-H9cKHwpsJkT9mDFvfvYzOV30ec2rVDkGvfk/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script + découpage</span></a>
+          <a class="vid" href="https://www.linkedin.com/posts/yannickdorego_dakar-saintlouis-kaolack-ugcPost-7180557160257355777-8e-5" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Vidéo finale</span></a>
         </div>
       </div>
 
@@ -693,7 +705,7 @@ html.reading { overflow: hidden; }
         <div class="client">BNDE<small>Banque Nationale pour le Développement Économique</small></div>
         <div class="mission"><p>Réalisation de la vidéo.</p><div class="tags"><span class="tag">Vidéo</span></div></div>
         <div class="deliv">
-          <a class="vid" href="https://www.instagram.com/reel/DDUyWf_NCm-/" target="_blank" rel="noopener">Vidéo finale</a>
+          <a class="vid" href="https://www.instagram.com/reel/DDUyWf_NCm-/" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Vidéo finale</span></a>
         </div>
       </div>
 
@@ -701,8 +713,8 @@ html.reading { overflow: hidden; }
         <div class="client">Neurotech<small>Tech</small></div>
         <div class="mission"><p>Script voix off et découpage, puis la vidéo.</p><div class="tags"><span class="tag">Script VO</span><span class="tag">Découpage</span><span class="tag">Vidéo</span></div></div>
         <div class="deliv">
-          <a class="doc" href="https://docs.google.com/document/d/16g3wH7nQ9jRtA6eahs1B8UD6oxFoRuSm7_vGAubUfYI/edit" target="_blank" rel="noopener">Script VO + découpage</a>
-          <a class="vid" href="https://drive.google.com/drive/folders/11IYrBWshGotAgsJbzVO87UKrnaIM_Hme" target="_blank" rel="noopener">Vidéo</a>
+          <a class="doc" href="https://docs.google.com/document/d/16g3wH7nQ9jRtA6eahs1B8UD6oxFoRuSm7_vGAubUfYI/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script VO + découpage</span></a>
+          <a class="vid" href="https://drive.google.com/drive/folders/11IYrBWshGotAgsJbzVO87UKrnaIM_Hme" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Vidéo</span></a>
         </div>
       </div>
 
@@ -710,7 +722,7 @@ html.reading { overflow: hidden; }
         <div class="client">Ministère de la Communication<small>Côte d'Ivoire</small></div>
         <div class="mission"><p>Écriture de script.</p><div class="tags"><span class="tag">Script</span></div></div>
         <div class="deliv">
-          <a class="doc" href="https://docs.google.com/document/d/1xqhG6YwLIkslva8_akXhTkHd3DGdM1uWgNglB619700/edit?usp=drivesdk" target="_blank" rel="noopener">Script</a>
+          <a class="doc" href="https://docs.google.com/document/d/1xqhG6YwLIkslva8_akXhTkHd3DGdM1uWgNglB619700/edit?usp=drivesdk" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script</span></a>
         </div>
       </div>
 
@@ -718,7 +730,7 @@ html.reading { overflow: hidden; }
         <div class="client">Groupe Baobab<small>Film institutionnel · 20 ans du groupe</small></div>
         <div class="mission"><p>Script du film institutionnel.</p><div class="tags"><span class="tag">Script</span></div></div>
         <div class="deliv">
-          <a class="doc" href="https://docs.google.com/document/d/1nqt-cuYX7wFYOjonRTQz1F7WCc2-riKESrg9asjB8ug/edit?usp=sharing" target="_blank" rel="noopener">Script film institutionnel</a>
+          <a class="doc" href="https://docs.google.com/document/d/1nqt-cuYX7wFYOjonRTQz1F7WCc2-riKESrg9asjB8ug/edit?usp=sharing" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script film institutionnel</span></a>
         </div>
       </div>
 
@@ -726,8 +738,8 @@ html.reading { overflow: hidden; }
         <div class="client">Djie Fall Silk<small>Rebranding &amp; lancement</small></div>
         <div class="mission"><p>Rebranding et lancement de la marque. Vidéo <strong>entièrement tournée au téléphone</strong>.</p><div class="tags"><span class="tag">Branding</span><span class="tag">Script</span><span class="tag">Vidéo</span></div></div>
         <div class="deliv">
-          <a class="doc" href="https://docs.google.com/document/d/1RmRoUrgjznYZbaM_m7Nai-zYxLwBk1rJ8CYQnsaASFc/edit" target="_blank" rel="noopener">Script</a>
-          <a class="vid" href="https://www.instagram.com/reel/C1-Xi3Prbrs/" target="_blank" rel="noopener">Vidéo finale</a>
+          <a class="doc" href="https://docs.google.com/document/d/1RmRoUrgjznYZbaM_m7Nai-zYxLwBk1rJ8CYQnsaASFc/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script</span></a>
+          <a class="vid" href="https://www.instagram.com/reel/C1-Xi3Prbrs/" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Vidéo finale</span></a>
         </div>
       </div>
 
@@ -735,7 +747,7 @@ html.reading { overflow: hidden; }
         <div class="client">Mission &amp; Sens<small>Rebranding</small></div>
         <div class="mission"><p>Stratégie de marque complète.</p><div class="tags"><span class="tag">Brand strategy</span></div></div>
         <div class="deliv">
-          <a class="doc" href="https://docs.google.com/document/d/1dIdheQDmQK-qD99JRwJsTW8WGevZtyn0Y9rMJTA-52w/edit?usp=drivesdk" target="_blank" rel="noopener">Brand strategy</a>
+          <a class="doc" href="https://docs.google.com/document/d/1dIdheQDmQK-qD99JRwJsTW8WGevZtyn0Y9rMJTA-52w/edit?usp=drivesdk" target="_blank" rel="noopener"><span class="dv-k">Lire la stratégie</span><span class="dv-t">Brand strategy</span></a>
         </div>
       </div>
 
@@ -743,7 +755,7 @@ html.reading { overflow: hidden; }
         <div class="client">Zadada<small>Rebranding de marque</small></div>
         <div class="mission"><p>Refonte de la marque.</p><div class="tags"><span class="tag">Branding</span></div></div>
         <div class="deliv">
-          <a class="web" href="https://www.instagram.com/_zadada_/" target="_blank" rel="noopener">Voir la marque</a>
+          <a class="web" href="https://www.instagram.com/_zadada_/" target="_blank" rel="noopener"><span class="dv-k">Découvrir</span><span class="dv-t">Voir la marque</span></a>
         </div>
       </div>
 
@@ -751,7 +763,7 @@ html.reading { overflow: hidden; }
         <div class="client">Zadada<small>Campagne</small></div>
         <div class="mission"><p>Capsule Jam.</p><div class="tags"><span class="tag">Campagne</span><span class="tag">Vidéo</span></div></div>
         <div class="deliv">
-          <a class="vid" href="https://www.instagram.com/reel/Cs1euLvIUAt/" target="_blank" rel="noopener">Capsule Jam</a>
+          <a class="vid" href="https://www.instagram.com/reel/Cs1euLvIUAt/" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Capsule Jam</span></a>
         </div>
       </div>
 
@@ -759,7 +771,7 @@ html.reading { overflow: hidden; }
         <div class="client">Vidéo produit<small>Tournée au téléphone</small></div>
         <div class="mission"><p class="highlight">1 million de ventes en moins de 24 h.</p><div class="tags"><span class="tag">Smartphone</span><span class="tag">Vidéo</span></div></div>
         <div class="deliv">
-          <a class="vid" href="https://www.instagram.com/reel/Cp3KuoBoKwt/" target="_blank" rel="noopener">Voir la vidéo</a>
+          <a class="vid" href="https://www.instagram.com/reel/Cp3KuoBoKwt/" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Voir la vidéo</span></a>
         </div>
       </div>
     </div>
@@ -988,10 +1000,11 @@ html.reading { overflow: hidden; }
   const rdOpen = document.getElementById('rd-open'), rdVideo = document.getElementById('rd-video');
   const cache = {};
   const urlOf = a => a.dataset.href || a.href;
+  const titleOf = a => (a.querySelector('.dv-t') || a).textContent.trim();
   const slugOf = a => { const m = urlOf(a).match(/\/d\/([\w-]+)/); return m && SCRIPTS[m[1]]; };
   const loadScript = async (a, docs) => {
     const slug = slugOf(a);
-    rdTitle.textContent = a.textContent.trim();
+    rdTitle.textContent = titleOf(a);
     rdOpen.href = urlOf(a);
     [...rdTabs.children].forEach(b => b.setAttribute('aria-selected', b._link === a ? 'true' : 'false'));
     rdBody.classList.add('loading');
@@ -1022,7 +1035,7 @@ html.reading { overflow: hidden; }
     rdTabs.hidden = docs.length < 2;
     docs.forEach(d => {
       const b = document.createElement('button');
-      b.type = 'button'; b.setAttribute('role', 'tab'); b.textContent = d.textContent.trim(); b._link = d;
+      b.type = 'button'; b.setAttribute('role', 'tab'); b.textContent = titleOf(d); b._link = d;
       b.addEventListener('click', () => loadScript(d, docs));
       rdTabs.appendChild(b);
     });
