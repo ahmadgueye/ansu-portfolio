@@ -2,7 +2,7 @@ Photos de profil des commentateurs (section « Commentaires de l'audience »).
 
 Nommer chaque fichier d'après le pseudo Instagram, en .jpg, format carré (200 × 200 px suffit) :
 
-- senmindset.jpg
+- papeserigne.off.jpg (anciennement senmindset)
 - aalykaaa.jpg
 - mouhamedoune_.jpg
 - bilal_ehysse.jpg
