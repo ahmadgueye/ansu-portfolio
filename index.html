@@ -591,14 +591,14 @@ html.reading { overflow: hidden; }
               repeating-linear-gradient(90deg, transparent 0 22px, rgba(255,255,255,.025) 22px 23px);
 }
 .fc-visual > img.fc-img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
-.fc-visual:has(.fc-img)::before { opacity: 1; background: linear-gradient(180deg, rgba(13,11,13,.1) 30%, rgba(13,11,13,.82)); }
+.fc-visual:has(.fc-img)::before { opacity: 1; background: linear-gradient(180deg, rgba(13,11,13,.45) 0%, rgba(13,11,13,.08) 28%, rgba(13,11,13,.18) 48%, rgba(13,11,13,.86) 100%); }
 .fcard:hover .fc-img { transform: scale(1.04); }
 .fc-logo {
   position: absolute; top: 16px; left: 16px; display: grid; place-items: center;
   width: 112px; height: 56px; padding: 8px 12px; border-radius: 8px; background: #fff; box-shadow: 0 6px 18px -8px rgba(0,0,0,.4);
 }
 .fc-logo img { display: block; max-width: 100%; max-height: 100%; width: var(--lw, auto); height: var(--lh, auto); object-fit: contain; }
-.fc-kind { position: absolute; top: 20px; right: 20px; font-family: var(--f-script); font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: color-mix(in srgb, var(--stage-fg) 70%, transparent); }
+.fc-kind { position: absolute; top: 16px; right: 16px; padding: 6px 9px; border-radius: 6px; background: rgba(13,11,13,.55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); font-family: var(--f-script); font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--stage-fg); }
 .fc-quote { margin: 0; font-family: var(--f-display); font-weight: 800; text-transform: uppercase; font-size: clamp(22px, 2.5vw, 32px); line-height: 1; letter-spacing: .005em; text-wrap: balance; max-width: 22ch; }
 .fc-quote span { background: linear-gradient(var(--stage-accent), var(--stage-accent)) left 92% / 0 .12em no-repeat; transition: background-size .6s cubic-bezier(.2,.7,.2,1); }
 .fcard:hover .fc-quote span { background-size: 100% .12em; }
@@ -741,6 +741,7 @@ html.reading { overflow: hidden; }
       <div class="fgrid">
       <article class="fcard" data-t="script video">
         <div class="fc-visual">
+          <img class="fc-img" src="img/projets/placeholder-mctn.jpg" alt="" loading="lazy">
           <span class="fc-logo"><img src="img/logos/trim/senegal.png" alt="Ministère de la Communication"></span>
           <span class="fc-kind">Film institutionnel</span>
           <blockquote class="fc-quote"><span>« Autrefois, chaque démarche administrative était une course contre-la-montre. »</span></blockquote>
@@ -757,6 +758,7 @@ html.reading { overflow: hidden; }
 
       <article class="fcard" data-t="script video">
         <div class="fc-visual">
+          <img class="fc-img" src="img/projets/placeholder-apix.jpg" alt="" loading="lazy">
           <span class="fc-logo"><img src="img/logos/trim/apix.svg" alt="APIX SA"></span>
           <span class="fc-kind">Film de présentation</span>
           <blockquote class="fc-quote"><span>« Fii, on produit, on transforme. Fii, on fait rayonner notre culture. »</span></blockquote>
@@ -773,6 +775,7 @@ html.reading { overflow: hidden; }
 
       <article class="fcard" data-t="script video">
         <div class="fc-visual">
+          <img class="fc-img" src="img/projets/placeholder-medickane.jpg" alt="" loading="lazy">
           <span class="fc-logo"><img src="img/logos/trim/medickane.png" alt="Clinique Medic'Kane"></span>
           <span class="fc-kind">Spot en trois langues</span>
           <blockquote class="fc-quote"><span>« La qualité des soins médicaux ne doit pas être un luxe, mais un droit. »</span></blockquote>
@@ -792,6 +795,7 @@ html.reading { overflow: hidden; }
 
       <article class="fcard" data-t="script video">
         <div class="fc-visual">
+          <img class="fc-img" src="img/projets/placeholder-neurotech.jpg" alt="" loading="lazy">
           <span class="fc-logo"><img src="img/logos/trim/neurotech.png" alt="Neurotech"></span>
           <span class="fc-kind">Film des 20 ans</span>
           <blockquote class="fc-quote"><span>« Derrière chaque succès, il y a une histoire non racontée. »</span></blockquote>
@@ -808,6 +812,7 @@ html.reading { overflow: hidden; }
 
       <article class="fcard" data-t="script">
         <div class="fc-visual">
+          <img class="fc-img" src="img/projets/placeholder-baobab.jpg" alt="" loading="lazy">
           <span class="fc-logo"><img src="img/logos/trim/baobab.svg" alt="Groupe Baobab"></span>
           <span class="fc-kind">Film institutionnel</span>
           <blockquote class="fc-quote"><span>« Le baobab ne pousse pas en un jour. »</span></blockquote>
@@ -823,6 +828,7 @@ html.reading { overflow: hidden; }
 
       <article class="fcard" data-t="script video">
         <div class="fc-visual">
+          <img class="fc-img" src="img/projets/placeholder-teranga.jpg" alt="" loading="lazy">
           <span class="fc-logo"><img src="img/logos/trim/teranga-tech.png" alt="Institut Français"></span>
           <span class="fc-kind">Film de l'incubateur</span>
           <blockquote class="fc-quote"><span>« Au cœur de l'Afrique de l'Ouest, un réseau d'innovation prend vie. »</span></blockquote>
@@ -839,6 +845,7 @@ html.reading { overflow: hidden; }
 
       <article class="fcard" data-t="script">
         <div class="fc-visual">
+          <img class="fc-img" src="img/projets/placeholder-mci.jpg" alt="" loading="lazy">
           <span class="fc-logo"><img src="img/logos/trim/ministere-ci.png" alt="Ministère de la Communication"></span>
           <span class="fc-kind">Films institutionnels</span>
           <blockquote class="fc-quote"><span>« Un toit. Qu’y a-t-il de plus fondamental ? »</span></blockquote>
@@ -854,6 +861,7 @@ html.reading { overflow: hidden; }
 
       <article class="fcard" data-t="video">
         <div class="fc-visual">
+          <img class="fc-img" src="img/projets/placeholder-bnde.jpg" alt="" loading="lazy">
           <span class="fc-logo"><img src="img/logos/trim/bnde.png" alt="BNDE"></span>
           <span class="fc-kind">Vidéo</span>
           <blockquote class="fc-quote fc-fact"><span>Tournage et montage de la vidéo.</span></blockquote>
@@ -869,6 +877,7 @@ html.reading { overflow: hidden; }
 
       <article class="fcard" data-t="brand script video">
         <div class="fc-visual">
+          <img class="fc-img" src="img/projets/placeholder-djiefall.jpg" alt="" loading="lazy">
           <span class="fc-logo"><img src="img/logos/trim/djiefall.png" alt="Djie Fall Silk"></span>
           <span class="fc-kind">Rebranding & lancement</span>
           <blockquote class="fc-quote"><span>« Chaque femme est un maillon d’une chaîne de soutien inébranlable. »</span></blockquote>
@@ -885,6 +894,7 @@ html.reading { overflow: hidden; }
 
       <article class="fcard" data-t="brand">
         <div class="fc-visual">
+          <img class="fc-img" src="img/projets/placeholder-mission-sens.jpg" alt="" loading="lazy">
           <span class="fc-logo"><img src="img/logos/trim/mission-sens.png" alt="Mission &amp; Sens"></span>
           <span class="fc-kind">Brand strategy</span>
           <blockquote class="fc-quote"><span>« Quand on comprend l’enfant qu’on a été, on éclaire les pas de celui qu’on éduque. »</span></blockquote>
@@ -900,6 +910,7 @@ html.reading { overflow: hidden; }
 
       <article class="fcard" data-t="brand">
         <div class="fc-visual">
+          <img class="fc-img" src="img/projets/placeholder-zadada-marque.jpg" alt="" loading="lazy">
           <span class="fc-logo"><img src="img/logos/trim/zadada.png" alt="Zadada"></span>
           <span class="fc-kind">Branding</span>
           <blockquote class="fc-quote fc-fact"><span>Nouvelle identité de marque.</span></blockquote>
@@ -915,6 +926,7 @@ html.reading { overflow: hidden; }
 
       <article class="fcard" data-t="video">
         <div class="fc-visual">
+          <img class="fc-img" src="img/projets/placeholder-zadada-capsule.jpg" alt="" loading="lazy">
           <span class="fc-logo"><img src="img/logos/trim/zadada.png" alt="Zadada"></span>
           <span class="fc-kind">Campagne</span>
           <blockquote class="fc-quote fc-fact"><span>Capsule Jam.</span></blockquote>
@@ -930,6 +942,7 @@ html.reading { overflow: hidden; }
 
       <article class="fcard wide" data-t="video">
         <div class="fc-visual">
+          <img class="fc-img" src="img/projets/placeholder-video-produit.jpg" alt="" loading="lazy">
           <span class="fc-kind">Tourné au téléphone</span>
           <blockquote class="fc-quote fc-fact"><span>1 million de ventes en moins de 24 h.</span></blockquote>
         </div>

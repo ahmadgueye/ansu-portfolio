@@ -52,4 +52,4 @@ Les 6 premiers projets sont des cartes `.fcard` (visuel + phrase du script + log
   …
 ```
 
-L'image passe en fond, un dégradé sombre garde la phrase lisible. La taille des logos est équilibrée automatiquement (même surface visuelle, quel que soit le format).
+Les images actuelles `img/projets/placeholder-*.jpg` sont **provisoires** (photos libres de droits Unsplash via picsum.photos) : à remplacer par les captures des vidéos avant la mise en ligne. L'image passe en fond, un dégradé sombre garde la phrase lisible. La taille des logos est équilibrée automatiquement (même surface visuelle, quel que soit le format).
