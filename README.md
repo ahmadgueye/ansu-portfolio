@@ -10,6 +10,7 @@ img/
   ansou-cutout.png    portrait détouré du hero
   reel-1…6.jpg        miniatures des vidéos Instagram
   logos/              logos des clients (grille « Ils m'ont fait confiance »)
+    trim/             mêmes logos recadrés au ras du contenu (cartes des projets), via tools/prep_logos.py
   avatars/            photos des commentateurs (voir le README du dossier)
 scripts/              texte intégral des scripts, affiché dans le lecteur du site
   img/                images de la brand strategy Mission & Sens
@@ -40,3 +41,15 @@ python3 tools/convert_docs.py exports scripts
 ```
 
 Le lecteur charge les fichiers avec `fetch` : il faut servir le site par HTTP (un simple `python3 -m http.server` suffit en local), pas l'ouvrir en `file://`.
+
+## Projets à la une
+
+Les 6 premiers projets sont des cartes `.fcard` (visuel + phrase du script + logo + livrables) ; les autres restent dans la liste « Autres projets ». Pour ajouter l'image d'une vidéo à une carte, placer une balise dans le visuel :
+
+```html
+<div class="fc-visual">
+  <img class="fc-img" src="img/projets/mctn.jpg" alt="">
+  …
+```
+
+L'image passe en fond, un dégradé sombre garde la phrase lisible. La taille des logos est équilibrée automatiquement (même surface visuelle, quel que soit le format).

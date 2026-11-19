@@ -23,6 +23,9 @@
   --on-accent: #ffffff;
   --accent-hover: #a32c3d;
   --ink: #19151a;           /* pastilles d'icônes sombres (vidéo) */
+  --stage: #1d171c;         /* fond des visuels de projets */
+  --stage-fg: #f4efef;
+  --stage-accent: #e0707c;
 
   --f-display: "Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
   --f-body: "Familjen Grotesk", "Helvetica Neue", Arial, sans-serif;
@@ -33,7 +36,7 @@
     --bg: #1c181c; --surface: #252025; --fg: #efe9eb; --muted: #a39aa0;
     --line: #3a3239; --accent: #e0707c; --accent-soft: #3a1f25; --tile: #e9e4e6;
     --frame: #0d0b0d; --frame-fg: #f4efef; --frame-muted: #a59ca1; --frame-accent: #e0707c;
-    --frame-line: #2a2429; --frame-line-strong: #4a4148; --on-accent: #1a0d10; --accent-hover: #ec8d97; --ink: #4a4148;
+    --frame-line: #2a2429; --frame-line-strong: #4a4148; --on-accent: #1a0d10; --accent-hover: #ec8d97; --ink: #4a4148; --stage: #0d0b0d; --stage-fg: #f4efef; --stage-accent: #e0707c;
     color-scheme: dark;
   }
 }
@@ -41,7 +44,7 @@
   --bg: #1c181c; --surface: #252025; --fg: #efe9eb; --muted: #a39aa0;
   --line: #3a3239; --accent: #e0707c; --accent-soft: #3a1f25; --tile: #e9e4e6;
     --frame: #0d0b0d; --frame-fg: #f4efef; --frame-muted: #a59ca1; --frame-accent: #e0707c;
-    --frame-line: #2a2429; --frame-line-strong: #4a4148; --on-accent: #1a0d10; --accent-hover: #ec8d97; --ink: #4a4148;
+    --frame-line: #2a2429; --frame-line-strong: #4a4148; --on-accent: #1a0d10; --accent-hover: #ec8d97; --ink: #4a4148; --stage: #0d0b0d; --stage-fg: #f4efef; --stage-accent: #e0707c;
     color-scheme: dark;
 }
 
@@ -469,7 +472,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .sec-head p, .about-text p, .training, .service,
-    .filters, .shot-head, .shot, .reel, .viral a, .quotes-rail, .clients-head, .logos .logo,
+    .filters, .shot-head, .shot, .fcard, .others-title, .reel, .viral a, .quotes-rail, .clients-head, .logos .logo,
     .contact .direction, .ccard, .stat {
       animation: in-up linear both; animation-timeline: view(); animation-range: entry 0% entry 85%;
     }
@@ -566,6 +569,42 @@ html.reading { overflow: hidden; }
   .sc-table td[data-h]::before { content: attr(data-h); display: block; margin-bottom: 6px; font-family: var(--f-script); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
 }
 @media (prefers-reduced-motion: reduce) { .reader[open], .reader::backdrop { animation: none; } }
+/* ---------- Projets à la une : cartes avec visuel ---------- */
+.fgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-bottom: 56px; }
+.fcard { display: flex; flex-direction: column; min-width: 0; border-radius: 14px; overflow: hidden; background: var(--bg); border: 1px solid var(--line); transition: transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s; }
+.fcard:hover { transform: translateY(-3px); box-shadow: 0 22px 40px -26px rgba(25, 21, 26, .45); }
+.fc-visual {
+  position: relative; aspect-ratio: 16 / 9; max-width: 100%; overflow: hidden; isolation: isolate;
+  background: var(--stage); color: var(--stage-fg);
+  display: flex; flex-direction: column; justify-content: flex-end; padding: 22px 24px;
+}
+/* trame discrète façon pellicule, en attendant les images des vidéos */
+.fc-visual::before {
+  content: ""; position: absolute; inset: 0; z-index: -1; opacity: .5;
+  background: radial-gradient(120% 90% at 100% 0%, color-mix(in srgb, var(--stage-accent) 28%, transparent), transparent 60%),
+              repeating-linear-gradient(90deg, transparent 0 22px, rgba(255,255,255,.025) 22px 23px);
+}
+.fc-visual > img.fc-img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.2,.7,.2,1); }
+.fc-visual:has(.fc-img)::before { opacity: 1; background: linear-gradient(180deg, rgba(13,11,13,.1) 30%, rgba(13,11,13,.82)); }
+.fcard:hover .fc-img { transform: scale(1.04); }
+.fc-logo {
+  position: absolute; top: 16px; left: 16px; display: grid; place-items: center;
+  width: 112px; height: 56px; padding: 8px 12px; border-radius: 8px; background: #fff; box-shadow: 0 6px 18px -8px rgba(0,0,0,.4);
+}
+.fc-logo img { display: block; max-width: 100%; max-height: 100%; width: var(--lw, auto); height: var(--lh, auto); object-fit: contain; }
+.fc-kind { position: absolute; top: 20px; right: 20px; font-family: var(--f-script); font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: color-mix(in srgb, var(--stage-fg) 70%, transparent); }
+.fc-quote { margin: 0; font-family: var(--f-display); font-weight: 800; text-transform: uppercase; font-size: clamp(22px, 2.5vw, 32px); line-height: 1; letter-spacing: .005em; text-wrap: balance; max-width: 22ch; }
+.fc-quote span { background: linear-gradient(var(--stage-accent), var(--stage-accent)) left 92% / 0 .12em no-repeat; transition: background-size .6s cubic-bezier(.2,.7,.2,1); }
+.fcard:hover .fc-quote span { background-size: 100% .12em; }
+.fc-body { display: grid; gap: 12px; padding: 20px 24px 24px; flex: 1 1 auto; align-content: start; }
+.fc-body .client { font-family: var(--f-display); font-weight: 800; text-transform: uppercase; font-size: 22px; line-height: 1.05; }
+.fc-body .client small { display: block; font-family: var(--f-body); font-weight: 500; text-transform: none; font-size: 14px; color: var(--muted); margin-top: 4px; }
+.fc-body .mission p { margin: 0; color: var(--muted); }
+.fc-body .mission p strong { color: var(--fg); }
+.fc-body .deliv { margin-top: 4px; }
+.others-title { font-family: var(--f-script); font-weight: 700; font-size: 14px; letter-spacing: .05em; text-transform: uppercase; color: var(--accent); margin: 0 0 14px; }
+@media (max-width: 860px) { .fgrid { grid-template-columns: 1fr; } }
+@media (max-width: 480px) { .fc-visual { aspect-ratio: 4 / 3; padding: 18px; } .fc-logo { width: 96px; height: 48px; } }
 </style>
 
 <nav class="nav" aria-label="Navigation principale">
@@ -682,7 +721,7 @@ html.reading { overflow: hidden; }
     <div class="sec-head">
       <div class="slug">Découpage — les projets réalisés</div>
       <h2>Ministères, banques, cliniques, marques.</h2>
-      <p>Chaque ligne renvoie aux livrables réels : scripts, découpages techniques et vidéos finales.</p>
+      <p>Une phrase de chaque script, puis les livrables réels : scripts, découpages techniques et vidéos finales.</p>
     </div>
 
     <div class="filters" role="group" aria-label="Filtrer les projets">
@@ -692,47 +731,110 @@ html.reading { overflow: hidden; }
       <button class="chip" id="f-video" data-f="video" aria-pressed="false">Vidéo <small>9</small></button>
     </div>
 
-    <div class="shotlist">
+    <div class="projects-body">
+      <div class="fgrid">
+      <article class="fcard" data-t="script video">
+        <div class="fc-visual">
+          <span class="fc-logo"><img src="img/logos/trim/senegal.png" alt="Ministère de la Communication"></span>
+          <span class="fc-kind">Film institutionnel</span>
+          <blockquote class="fc-quote"><span>« Autrefois, chaque démarche administrative était une course contre-la-montre. »</span></blockquote>
+        </div>
+        <div class="fc-body">
+          <div class="client">Ministère de la Communication<small>Télécommunications et Numérique · Sénégal</small></div>
+          <div class="mission"><p>Lancement du <strong>New Deal Technologique</strong>.</p><div class="tags"><span class="tag">Script VO</span><span class="tag">Découpage</span><span class="tag">Vidéo</span></div></div>
+          <div class="deliv">
+            <a class="doc" href="https://docs.google.com/document/d/13AFK0nPvlNndJckXx-iSCbNp0tdXtjEFY5W5-BSfLjE/edit?usp=drivesdk" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script VO + découpage</span></a>
+            <a class="vid" href="https://www.instagram.com/reel/DGeVh_QNe_N/" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Vidéo finale</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="fcard" data-t="script video">
+        <div class="fc-visual">
+          <span class="fc-logo"><img src="img/logos/trim/apix.svg" alt="APIX SA"></span>
+          <span class="fc-kind">Film de présentation</span>
+          <blockquote class="fc-quote"><span>« Fii, on produit, on transforme. Fii, on fait rayonner notre culture. »</span></blockquote>
+        </div>
+        <div class="fc-body">
+          <div class="client">APIX SA<small>Film FII Sénégal</small></div>
+          <div class="mission"><p>Film de présentation du <strong>Forum Invest in Sénégal</strong>.</p><div class="tags"><span class="tag">Script VO</span><span class="tag">Découpage</span><span class="tag">Film</span></div></div>
+          <div class="deliv">
+            <a class="doc" href="https://docs.google.com/document/d/1MTv_EHnDlvtpBopwBFhQm2xAio5HSISCLwcYQRupXgw/edit?usp=sharing" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script VO + découpage</span></a>
+            <a class="vid" href="https://www.instagram.com/reel/DPlZinwjYlS/" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Film FII Sénégal</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="fcard" data-t="script video">
+        <div class="fc-visual">
+          <span class="fc-logo"><img src="img/logos/trim/medickane.png" alt="Clinique Medic'Kane"></span>
+          <span class="fc-kind">Spot en trois langues</span>
+          <blockquote class="fc-quote"><span>« La qualité des soins médicaux ne doit pas être un luxe, mais un droit. »</span></blockquote>
+        </div>
+        <div class="fc-body">
+          <div class="client">Clinique Medic'Kane<small>Santé · Dakar</small></div>
+          <div class="mission"><p>Spot décliné en <strong>trois langues</strong> avec découpage technique complet.</p><div class="tags"><span class="tag">FR</span><span class="tag">Wolof</span><span class="tag">EN</span><span class="tag">Vidéo</span></div></div>
+          <div class="deliv">
+            <a class="doc" data-title="Script FR" href="https://docs.google.com/document/u/0/d/1xd3qUsW7-hQyACuYsDdxNe42MtoZEe4NERM6gTewJbY/edit" target="_blank" rel="noopener"><span class="dv-k">Lire les scripts</span><span class="dv-t">FR · Wolof · EN · Découpage</span></a>
+            <a class="doc" hidden href="https://docs.google.com/document/d/1ZoWAiWb6DKZaIkLB95hNyNX8UCrrvcfzAQ_55I42SXU/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script Wolof</span></a>
+            <a class="doc" hidden href="https://docs.google.com/document/u/0/d/1y6v28bWHeMkvCdI0xjdTr9S26hGghpF08EnlC6LRoT8/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script EN</span></a>
+            <a class="doc" hidden href="https://docs.google.com/document/u/0/d/1A2OXFkdjhqb1XfnSU79OTtrP_8kIoIfgnK0RXQv77uI/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Découpage technique</span></a>
+            <a class="vid" href="https://www.youtube.com/watch?v=2Mzvm3t8Ul0" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Vidéo finale</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="fcard" data-t="script video">
+        <div class="fc-visual">
+          <span class="fc-logo"><img src="img/logos/trim/neurotech.png" alt="Neurotech"></span>
+          <span class="fc-kind">Film des 20 ans</span>
+          <blockquote class="fc-quote"><span>« Derrière chaque succès, il y a une histoire non racontée. »</span></blockquote>
+        </div>
+        <div class="fc-body">
+          <div class="client">Neurotech<small>Tech</small></div>
+          <div class="mission"><p>Script voix off et découpage, puis la vidéo.</p><div class="tags"><span class="tag">Script VO</span><span class="tag">Découpage</span><span class="tag">Vidéo</span></div></div>
+          <div class="deliv">
+            <a class="doc" href="https://docs.google.com/document/d/16g3wH7nQ9jRtA6eahs1B8UD6oxFoRuSm7_vGAubUfYI/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script VO + découpage</span></a>
+            <a class="vid" href="https://drive.google.com/drive/folders/11IYrBWshGotAgsJbzVO87UKrnaIM_Hme" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Vidéo</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="fcard" data-t="script">
+        <div class="fc-visual">
+          <span class="fc-logo"><img src="img/logos/trim/baobab.svg" alt="Groupe Baobab"></span>
+          <span class="fc-kind">Film institutionnel</span>
+          <blockquote class="fc-quote"><span>« Le baobab ne pousse pas en un jour. »</span></blockquote>
+        </div>
+        <div class="fc-body">
+          <div class="client">Groupe Baobab<small>Film institutionnel · 20 ans du groupe</small></div>
+          <div class="mission"><p>Script du film institutionnel.</p><div class="tags"><span class="tag">Script</span></div></div>
+          <div class="deliv">
+            <a class="doc" href="https://docs.google.com/document/d/1nqt-cuYX7wFYOjonRTQz1F7WCc2-riKESrg9asjB8ug/edit?usp=sharing" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script film institutionnel</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="fcard" data-t="script video">
+        <div class="fc-visual">
+          <span class="fc-logo"><img src="img/logos/trim/teranga-tech.png" alt="Institut Français"></span>
+          <span class="fc-kind">Film de l'incubateur</span>
+          <blockquote class="fc-quote"><span>« Au cœur de l'Afrique de l'Ouest, un réseau d'innovation prend vie. »</span></blockquote>
+        </div>
+        <div class="fc-body">
+          <div class="client">Institut Français<small>Teranga Tech Incub</small></div>
+          <div class="mission"><p>Présentation de l'incubateur.</p><div class="tags"><span class="tag">Script</span><span class="tag">Découpage</span><span class="tag">Vidéo</span></div></div>
+          <div class="deliv">
+            <a class="doc" href="https://docs.google.com/document/u/0/d/1ihSdxMC-H9cKHwpsJkT9mDFvfvYzOV30ec2rVDkGvfk/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script + découpage</span></a>
+            <a class="vid" href="https://www.linkedin.com/posts/yannickdorego_dakar-saintlouis-kaolack-ugcPost-7180557160257355777-8e-5" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Vidéo finale</span></a>
+          </div>
+        </div>
+      </article>
+      </div>
+
+      <h3 class="others-title">Autres projets</h3>
+      <div class="shotlist">
       <div class="shot-head"><span>Client</span><span>Mission</span><span>Livrables</span></div>
-
-      <div class="shot" data-t="script video">
-        <div class="client">Ministère de la Communication<small>Télécommunications et Numérique · Sénégal</small></div>
-        <div class="mission"><p>Lancement du <strong>New Deal Technologique</strong>.</p><div class="tags"><span class="tag">Script VO</span><span class="tag">Découpage</span><span class="tag">Vidéo</span></div></div>
-        <div class="deliv">
-          <a class="doc" href="https://docs.google.com/document/d/13AFK0nPvlNndJckXx-iSCbNp0tdXtjEFY5W5-BSfLjE/edit?usp=drivesdk" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script VO + découpage</span></a>
-          <a class="vid" href="https://www.instagram.com/reel/DGeVh_QNe_N/" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Vidéo finale</span></a>
-        </div>
-      </div>
-
-      <div class="shot" data-t="script video">
-        <div class="client">APIX SA<small>Film FII Sénégal</small></div>
-        <div class="mission"><p>Film de présentation du <strong>Forum Invest in Sénégal</strong>.</p><div class="tags"><span class="tag">Script VO</span><span class="tag">Découpage</span><span class="tag">Film</span></div></div>
-        <div class="deliv">
-          <a class="doc" href="https://docs.google.com/document/d/1MTv_EHnDlvtpBopwBFhQm2xAio5HSISCLwcYQRupXgw/edit?usp=sharing" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script VO + découpage</span></a>
-          <a class="vid" href="https://www.instagram.com/reel/DPlZinwjYlS/" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Film FII Sénégal</span></a>
-        </div>
-      </div>
-
-      <div class="shot" data-t="script video">
-        <div class="client">Clinique Medic'Kane<small>Santé · Dakar</small></div>
-        <div class="mission"><p>Spot décliné en <strong>trois langues</strong> avec découpage technique complet.</p><div class="tags"><span class="tag">FR</span><span class="tag">Wolof</span><span class="tag">EN</span><span class="tag">Vidéo</span></div></div>
-        <div class="deliv">
-          <a class="doc" data-title="Script FR" href="https://docs.google.com/document/u/0/d/1xd3qUsW7-hQyACuYsDdxNe42MtoZEe4NERM6gTewJbY/edit" target="_blank" rel="noopener"><span class="dv-k">Lire les scripts</span><span class="dv-t">FR · Wolof · EN · Découpage</span></a>
-          <a class="doc" hidden href="https://docs.google.com/document/d/1ZoWAiWb6DKZaIkLB95hNyNX8UCrrvcfzAQ_55I42SXU/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script Wolof</span></a>
-          <a class="doc" hidden href="https://docs.google.com/document/u/0/d/1y6v28bWHeMkvCdI0xjdTr9S26hGghpF08EnlC6LRoT8/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script EN</span></a>
-          <a class="doc" hidden href="https://docs.google.com/document/u/0/d/1A2OXFkdjhqb1XfnSU79OTtrP_8kIoIfgnK0RXQv77uI/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Découpage technique</span></a>
-          <a class="vid" href="https://www.youtube.com/watch?v=2Mzvm3t8Ul0" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Vidéo finale</span></a>
-        </div>
-      </div>
-
-      <div class="shot" data-t="script video">
-        <div class="client">Institut Français<small>Teranga Tech Incub</small></div>
-        <div class="mission"><p>Présentation de l'incubateur.</p><div class="tags"><span class="tag">Script</span><span class="tag">Découpage</span><span class="tag">Vidéo</span></div></div>
-        <div class="deliv">
-          <a class="doc" href="https://docs.google.com/document/u/0/d/1ihSdxMC-H9cKHwpsJkT9mDFvfvYzOV30ec2rVDkGvfk/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script + découpage</span></a>
-          <a class="vid" href="https://www.linkedin.com/posts/yannickdorego_dakar-saintlouis-kaolack-ugcPost-7180557160257355777-8e-5" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Vidéo finale</span></a>
-        </div>
-      </div>
 
       <div class="shot" data-t="video">
         <div class="client">BNDE<small>Banque Nationale pour le Développement Économique</small></div>
@@ -742,28 +844,11 @@ html.reading { overflow: hidden; }
         </div>
       </div>
 
-      <div class="shot" data-t="script video">
-        <div class="client">Neurotech<small>Tech</small></div>
-        <div class="mission"><p>Script voix off et découpage, puis la vidéo.</p><div class="tags"><span class="tag">Script VO</span><span class="tag">Découpage</span><span class="tag">Vidéo</span></div></div>
-        <div class="deliv">
-          <a class="doc" href="https://docs.google.com/document/d/16g3wH7nQ9jRtA6eahs1B8UD6oxFoRuSm7_vGAubUfYI/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script VO + découpage</span></a>
-          <a class="vid" href="https://drive.google.com/drive/folders/11IYrBWshGotAgsJbzVO87UKrnaIM_Hme" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Vidéo</span></a>
-        </div>
-      </div>
-
       <div class="shot" data-t="script">
         <div class="client">Ministère de la Communication<small>Côte d'Ivoire</small></div>
         <div class="mission"><p>Écriture de script.</p><div class="tags"><span class="tag">Script</span></div></div>
         <div class="deliv">
           <a class="doc" href="https://docs.google.com/document/d/1xqhG6YwLIkslva8_akXhTkHd3DGdM1uWgNglB619700/edit?usp=drivesdk" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script</span></a>
-        </div>
-      </div>
-
-      <div class="shot" data-t="script">
-        <div class="client">Groupe Baobab<small>Film institutionnel · 20 ans du groupe</small></div>
-        <div class="mission"><p>Script du film institutionnel.</p><div class="tags"><span class="tag">Script</span></div></div>
-        <div class="deliv">
-          <a class="doc" href="https://docs.google.com/document/d/1nqt-cuYX7wFYOjonRTQz1F7WCc2-riKESrg9asjB8ug/edit?usp=sharing" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script film institutionnel</span></a>
         </div>
       </div>
 
@@ -806,6 +891,7 @@ html.reading { overflow: hidden; }
         <div class="deliv">
           <a class="vid" href="https://www.instagram.com/reel/Cp3KuoBoKwt/" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Voir la vidéo</span></a>
         </div>
+      </div>
       </div>
     </div>
   </div>
@@ -1060,7 +1146,7 @@ html.reading { overflow: hidden; }
     rdBody.scrollTop = 0;
   };
   const openReader = a => {
-    const shot = a.closest('.shot');
+    const shot = a.closest('.shot, .fcard');
     const client = shot.querySelector('.client');
     rdClient.textContent = client.childNodes[0].textContent.trim() + ' — ' + (client.querySelector('small')?.textContent || '');
     const docs = [...shot.querySelectorAll('.deliv a.doc')].filter(slugOf);
@@ -1094,6 +1180,17 @@ html.reading { overflow: hidden; }
     a.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openReader(a); } });
   });
 
+  // Logos des cartes : surface visuelle égale quel que soit le format (large ou carré)
+  const sizeLogo = img => {
+    const r = img.naturalWidth / img.naturalHeight; if (!r) return;
+    const box = img.parentElement, W = box.clientWidth - 24, H = box.clientHeight - 16, AREA = W * H * 0.58;
+    let w = Math.sqrt(AREA * r), h = w / r;
+    if (w > W) { w = W; h = w / r; } if (h > H) { h = H; w = h * r; }
+    img.style.setProperty('--lw', w.toFixed(1) + 'px'); img.style.setProperty('--lh', h.toFixed(1) + 'px');
+  };
+  document.querySelectorAll('.fc-logo img').forEach(img => img.complete ? sizeLogo(img) : img.addEventListener('load', () => sizeLogo(img)));
+  window.addEventListener('resize', () => document.querySelectorAll('.fc-logo img').forEach(sizeLogo));
+
   // Menu mobile
   const nav = document.querySelector('.nav');
   const burger = document.getElementById('burger');
@@ -1107,7 +1204,7 @@ html.reading { overflow: hidden; }
 
   // Filtres du découpage
   const chips = document.querySelectorAll('.chip');
-  const shots = document.querySelectorAll('.shot');
+  const shots = document.querySelectorAll('.shot, .fcard');
   chips.forEach(c => c.addEventListener('click', () => {
     const f = c.dataset.f;
     chips.forEach(x => x.setAttribute('aria-pressed', x === c ? 'true' : 'false'));
