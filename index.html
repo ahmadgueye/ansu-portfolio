@@ -570,7 +570,13 @@ html.reading { overflow: hidden; }
 }
 @media (prefers-reduced-motion: reduce) { .reader[open], .reader::backdrop { animation: none; } }
 /* ---------- Projets à la une : cartes avec visuel ---------- */
-.fgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-bottom: 56px; }
+.fgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.fcard.wide { grid-column: 1 / -1; }
+.fcard.wide .fc-visual { aspect-ratio: 21 / 8; }
+.fc-fact span { color: var(--stage-fg); }
+.fcard.wide .fc-fact { font-size: clamp(30px, 4.4vw, 56px); max-width: 18ch; }
+.fcard.wide .fc-fact span { color: var(--stage-accent); }
+@media (max-width: 860px) { .fcard.wide .fc-visual { aspect-ratio: 16 / 9; } }
 .fcard { display: flex; flex-direction: column; min-width: 0; border-radius: 14px; overflow: hidden; background: var(--bg); border: 1px solid var(--line); transition: transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s; }
 .fcard:hover { transform: translateY(-3px); box-shadow: 0 22px 40px -26px rgba(25, 21, 26, .45); }
 .fc-visual {
@@ -721,7 +727,7 @@ html.reading { overflow: hidden; }
     <div class="sec-head">
       <div class="slug">Découpage — les projets réalisés</div>
       <h2>Ministères, banques, cliniques, marques.</h2>
-      <p>Une phrase de chaque script, puis les livrables réels : scripts, découpages techniques et vidéos finales.</p>
+      <p>Chaque projet avec ses livrables réels : scripts, découpages techniques et vidéos finales.</p>
     </div>
 
     <div class="filters" role="group" aria-label="Filtrer les projets">
@@ -830,69 +836,113 @@ html.reading { overflow: hidden; }
           </div>
         </div>
       </article>
-      </div>
 
-      <h3 class="others-title">Autres projets</h3>
-      <div class="shotlist">
-      <div class="shot-head"><span>Client</span><span>Mission</span><span>Livrables</span></div>
-
-      <div class="shot" data-t="video">
-        <div class="client">BNDE<small>Banque Nationale pour le Développement Économique</small></div>
-        <div class="mission"><p>Réalisation de la vidéo.</p><div class="tags"><span class="tag">Vidéo</span></div></div>
-        <div class="deliv">
-          <a class="vid" href="https://www.instagram.com/reel/DDUyWf_NCm-/" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Vidéo finale</span></a>
+      <article class="fcard" data-t="script">
+        <div class="fc-visual">
+          <span class="fc-logo"><img src="img/logos/trim/ministere-ci.png" alt="Ministère de la Communication"></span>
+          <span class="fc-kind">Films institutionnels</span>
+          <blockquote class="fc-quote"><span>« Un toit. Qu’y a-t-il de plus fondamental ? »</span></blockquote>
         </div>
+        <div class="fc-body">
+          <div class="client">Ministère de la Communication<small>Côte d'Ivoire</small></div>
+          <div class="mission"><p>Écriture de script.</p><div class="tags"><span class="tag">Script</span></div></div>
+          <div class="deliv">
+            <a class="doc" href="https://docs.google.com/document/d/1xqhG6YwLIkslva8_akXhTkHd3DGdM1uWgNglB619700/edit?usp=drivesdk" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="fcard" data-t="video">
+        <div class="fc-visual">
+          <span class="fc-logo"><img src="img/logos/trim/bnde.png" alt="BNDE"></span>
+          <span class="fc-kind">Vidéo</span>
+          <blockquote class="fc-quote fc-fact"><span>Tournage et montage de la vidéo.</span></blockquote>
+        </div>
+        <div class="fc-body">
+          <div class="client">BNDE<small>Banque Nationale pour le Développement Économique</small></div>
+          <div class="mission"><p>Réalisation de la vidéo de la banque.</p><div class="tags"><span class="tag">Vidéo</span></div></div>
+          <div class="deliv">
+            <a class="vid" href="https://www.instagram.com/reel/DDUyWf_NCm-/" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Vidéo finale</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="fcard" data-t="brand script video">
+        <div class="fc-visual">
+          <span class="fc-logo"><img src="img/logos/trim/djiefall.png" alt="Djie Fall Silk"></span>
+          <span class="fc-kind">Rebranding & lancement</span>
+          <blockquote class="fc-quote"><span>« Chaque femme est un maillon d’une chaîne de soutien inébranlable. »</span></blockquote>
+        </div>
+        <div class="fc-body">
+          <div class="client">Djie Fall Silk<small>Rebranding &amp; lancement</small></div>
+          <div class="mission"><p>Rebranding et lancement de la marque. Vidéo <strong>entièrement tournée au téléphone</strong>.</p><div class="tags"><span class="tag">Branding</span><span class="tag">Script</span><span class="tag">Vidéo</span></div></div>
+          <div class="deliv">
+            <a class="doc" href="https://docs.google.com/document/d/1RmRoUrgjznYZbaM_m7Nai-zYxLwBk1rJ8CYQnsaASFc/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script</span></a>
+            <a class="vid" href="https://www.instagram.com/reel/C1-Xi3Prbrs/" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Vidéo finale</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="fcard" data-t="brand">
+        <div class="fc-visual">
+          <span class="fc-logo"><img src="img/logos/trim/mission-sens.png" alt="Mission &amp; Sens"></span>
+          <span class="fc-kind">Brand strategy</span>
+          <blockquote class="fc-quote"><span>« Quand on comprend l’enfant qu’on a été, on éclaire les pas de celui qu’on éduque. »</span></blockquote>
+        </div>
+        <div class="fc-body">
+          <div class="client">Mission &amp; Sens<small>Rebranding</small></div>
+          <div class="mission"><p>Stratégie de marque complète.</p><div class="tags"><span class="tag">Brand strategy</span></div></div>
+          <div class="deliv">
+            <a class="doc" href="https://docs.google.com/document/d/1dIdheQDmQK-qD99JRwJsTW8WGevZtyn0Y9rMJTA-52w/edit?usp=drivesdk" target="_blank" rel="noopener"><span class="dv-k">Lire la stratégie</span><span class="dv-t">Brand strategy</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="fcard" data-t="brand">
+        <div class="fc-visual">
+          <span class="fc-logo"><img src="img/logos/trim/zadada.png" alt="Zadada"></span>
+          <span class="fc-kind">Branding</span>
+          <blockquote class="fc-quote fc-fact"><span>Nouvelle identité de marque.</span></blockquote>
+        </div>
+        <div class="fc-body">
+          <div class="client">Zadada<small>Rebranding de marque</small></div>
+          <div class="mission"><p>Refonte de la marque.</p><div class="tags"><span class="tag">Branding</span></div></div>
+          <div class="deliv">
+            <a class="web" href="https://www.instagram.com/_zadada_/" target="_blank" rel="noopener"><span class="dv-k">Découvrir</span><span class="dv-t">Voir la marque</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="fcard" data-t="video">
+        <div class="fc-visual">
+          <span class="fc-logo"><img src="img/logos/trim/zadada.png" alt="Zadada"></span>
+          <span class="fc-kind">Campagne</span>
+          <blockquote class="fc-quote fc-fact"><span>Capsule Jam.</span></blockquote>
+        </div>
+        <div class="fc-body">
+          <div class="client">Zadada<small>Campagne</small></div>
+          <div class="mission"><p>Campagne vidéo pour la marque.</p><div class="tags"><span class="tag">Campagne</span><span class="tag">Vidéo</span></div></div>
+          <div class="deliv">
+            <a class="vid" href="https://www.instagram.com/reel/Cs1euLvIUAt/" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Capsule Jam</span></a>
+          </div>
+        </div>
+      </article>
+
+      <article class="fcard wide" data-t="video">
+        <div class="fc-visual">
+          <span class="fc-kind">Tourné au téléphone</span>
+          <blockquote class="fc-quote fc-fact"><span>1 million de ventes en moins de 24 h.</span></blockquote>
+        </div>
+        <div class="fc-body">
+          <div class="client">Vidéo produit<small>Tournée au téléphone</small></div>
+          <div class="mission"><p>Vidéo produit <strong>tournée et montée au smartphone</strong>.</p><div class="tags"><span class="tag">Smartphone</span><span class="tag">Vidéo</span></div></div>
+          <div class="deliv">
+            <a class="vid" href="https://www.instagram.com/reel/Cp3KuoBoKwt/" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Voir la vidéo</span></a>
+          </div>
+        </div>
+      </article>
       </div>
 
-      <div class="shot" data-t="script">
-        <div class="client">Ministère de la Communication<small>Côte d'Ivoire</small></div>
-        <div class="mission"><p>Écriture de script.</p><div class="tags"><span class="tag">Script</span></div></div>
-        <div class="deliv">
-          <a class="doc" href="https://docs.google.com/document/d/1xqhG6YwLIkslva8_akXhTkHd3DGdM1uWgNglB619700/edit?usp=drivesdk" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script</span></a>
-        </div>
-      </div>
-
-      <div class="shot" data-t="brand script video">
-        <div class="client">Djie Fall Silk<small>Rebranding &amp; lancement</small></div>
-        <div class="mission"><p>Rebranding et lancement de la marque. Vidéo <strong>entièrement tournée au téléphone</strong>.</p><div class="tags"><span class="tag">Branding</span><span class="tag">Script</span><span class="tag">Vidéo</span></div></div>
-        <div class="deliv">
-          <a class="doc" href="https://docs.google.com/document/d/1RmRoUrgjznYZbaM_m7Nai-zYxLwBk1rJ8CYQnsaASFc/edit" target="_blank" rel="noopener"><span class="dv-k">Lire le script</span><span class="dv-t">Script</span></a>
-          <a class="vid" href="https://www.instagram.com/reel/C1-Xi3Prbrs/" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Vidéo finale</span></a>
-        </div>
-      </div>
-
-      <div class="shot" data-t="brand">
-        <div class="client">Mission &amp; Sens<small>Rebranding</small></div>
-        <div class="mission"><p>Stratégie de marque complète.</p><div class="tags"><span class="tag">Brand strategy</span></div></div>
-        <div class="deliv">
-          <a class="doc" href="https://docs.google.com/document/d/1dIdheQDmQK-qD99JRwJsTW8WGevZtyn0Y9rMJTA-52w/edit?usp=drivesdk" target="_blank" rel="noopener"><span class="dv-k">Lire la stratégie</span><span class="dv-t">Brand strategy</span></a>
-        </div>
-      </div>
-
-      <div class="shot" data-t="brand">
-        <div class="client">Zadada<small>Rebranding de marque</small></div>
-        <div class="mission"><p>Refonte de la marque.</p><div class="tags"><span class="tag">Branding</span></div></div>
-        <div class="deliv">
-          <a class="web" href="https://www.instagram.com/_zadada_/" target="_blank" rel="noopener"><span class="dv-k">Découvrir</span><span class="dv-t">Voir la marque</span></a>
-        </div>
-      </div>
-
-      <div class="shot" data-t="video">
-        <div class="client">Zadada<small>Campagne</small></div>
-        <div class="mission"><p>Capsule Jam.</p><div class="tags"><span class="tag">Campagne</span><span class="tag">Vidéo</span></div></div>
-        <div class="deliv">
-          <a class="vid" href="https://www.instagram.com/reel/Cs1euLvIUAt/" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Capsule Jam</span></a>
-        </div>
-      </div>
-
-      <div class="shot" data-t="video">
-        <div class="client">Vidéo produit<small>Tournée au téléphone</small></div>
-        <div class="mission"><p class="highlight">1 million de ventes en moins de 24 h.</p><div class="tags"><span class="tag">Smartphone</span><span class="tag">Vidéo</span></div></div>
-        <div class="deliv">
-          <a class="vid" href="https://www.instagram.com/reel/Cp3KuoBoKwt/" target="_blank" rel="noopener"><span class="dv-k">Regarder</span><span class="dv-t">Voir la vidéo</span></a>
-        </div>
-      </div>
-      </div>
     </div>
   </div>
 </section>
